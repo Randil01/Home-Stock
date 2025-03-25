@@ -1,0 +1,36 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+.remind-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-sizing: border-box;
+}
+
+.remind-card:hover {
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.7);
+    transform: scale(1.02);
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.notification-container {
+    max-width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+    overflow: hidden;
+}
+
+.card {
+    min-height: 230px;
+}
+
+.description-text {
+    font-family: 'Poppins', sans-serif;  /* Use a more attractive font */
+    color: rgb(64, 66, 64);  /* Text color green */
+    text-align: center;  
+    font-size: 1.9rem;  
+    font-weight: 600;  
+    line-height: 1.6;  
+    margin: 20px 0;  
+    margin-left: 100px;
+    margin-right: 100px;
+  }
+  

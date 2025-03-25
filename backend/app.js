@@ -8,7 +8,7 @@ const app = express();
 dotenv.config();
 
 app.use(cors());
-app.use(bodyParser.json());
+app.use(express.json());
  
 //db connection
 mongoose.connect("mongodb+srv://thenularandila2002:Thenula2002@cluster0.tzu8j.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0").then(()=>console.log("connected to mongodb"))
@@ -21,3 +21,6 @@ mongoose.connect("mongodb+srv://thenularandila2002:Thenula2002@cluster0.tzu8j.mo
 // Access to remind
 const reminds = require("./routes/remindRoutes");
 app.use("/notification", reminds);
+
+const number = require("./routes/phoneRoutes");
+app.use("/number",number);

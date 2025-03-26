@@ -3,7 +3,7 @@ const schema = mongoose.Schema;
 
 const numberSchema = new schema({
     
-    number:{
+    email:{
         type : String,
         required : true,
         unique : true,

@@ -1,8 +1,7 @@
 import { Route,Routes } from 'react-router-dom';
 import AddRemind from "./component/reminds/addRemind";
 import DisplayRemind from "./component/reminds/displayReminds";
-import UpdateRemind from "./component/reminds/updateRemind"
-import Navbar from "./component/navbar/navbar";
+import UpdateRemind from "./component/reminds/updateRemind";
 
 
 function App() {
@@ -11,7 +10,7 @@ function App() {
       <Routes>
           <Route path="/" element={<DisplayRemind/>} />
           <Route path="/add" element={<AddRemind/>} />
-          <Route path="/updateremind/:id" element={<UpdateRemind/>} />
+          <Route path="/updateremind/:id" element={<UpdateRemind/>} /> 
       </Routes>
     </div>
   );

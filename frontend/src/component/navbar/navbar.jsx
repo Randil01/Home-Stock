@@ -19,16 +19,16 @@ function Navbar() {
         </button>
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav ms-auto">
-            <li className="nav-item">
-              <a className="nav-link" href="#">Grocery Inventory</a>
+            <li className="nav-item mx-3">
+              <a className="nav-link" href="#">Groceries</a>
             </li>
-            <li className="nav-item">
+            <li className="nav-item mx-3">
               <a className="nav-link" href="#">Assets</a>
             </li>
-            <li className="nav-item">
+            <li className="nav-item mx-3">
               <a className="nav-link" href="#">Reminders</a>
             </li>
-            <li className="nav-item">
+            <li className="nav-item mx-3">
               <a className="nav-link" href="#">Budgeting</a>
             </li>
           </ul>

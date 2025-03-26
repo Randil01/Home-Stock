@@ -23,4 +23,4 @@ const reminds = require("./routes/remindRoutes");
 app.use("/notification", reminds);
 
 const number = require("./routes/phoneRoutes");
-app.use("/number",number);
+app.use("/email",number);

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import jsPDF from "jspdf";
-import "jspdf-autotable";
+import { jsPDF } from "jspdf";
+import autoTable from "jspdf-autotable"; // Ensure the direct import if needed
 
 function BudgetReport() {
   const [budgets, setBudgets] = useState([]);
@@ -11,8 +11,8 @@ function BudgetReport() {
   useEffect(() => {
     const fetchBudgets = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/budget/display"); // Adjust API URL if needed
-        setBudgets(response.data);  // Directly setting the budget entries
+        const response = await axios.get("http://localhost:5000/budget/display");
+        setBudgets(response.data); // Assuming response.data is an array
         setLoading(false);
       } catch (error) {
         console.error("Error fetching budgets:", error);
@@ -39,14 +39,15 @@ function BudgetReport() {
       item.description || "N/A"
     ]);
 
-    // Generate table
-    doc.autoTable({
+    // Generate table using autoTable
+    autoTable(doc, {
       head: headers,
       body: data,
       startY: 25,
     });
 
-    doc.save("Budget_Entries_Report.pdf"); // Save as PDF
+    // Save the PDF file
+    doc.save("Budget_Entries_Report.pdf");
   };
 
   return (
@@ -85,7 +86,6 @@ function BudgetReport() {
             </tbody>
           </table>
 
-          {/* Download PDF Button */}
           <button
             onClick={generatePDF}
             style={{

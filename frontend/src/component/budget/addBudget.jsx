@@ -36,7 +36,7 @@ function AddBudget() {
   };
 
   const sendRequest = async () => {
-    await axios.post("http://localhost:5000/api/budget/add", {
+    await axios.post("http://localhost:5000/budget/add", {
       category: String(inputs.category),
       amount: Number(inputs.amount),
       dueDate: new Date(inputs.dueDate),

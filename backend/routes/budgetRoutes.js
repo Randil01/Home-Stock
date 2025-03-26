@@ -1,5 +1,5 @@
 const express = require('express');
-const Budget = require('../models/budgetModel');
+const Budget = require('../model/budgetModel');
 
 const router = express.Router();
 
@@ -15,13 +15,12 @@ router.post('/add', async (req, res) => {
 });
 
 // Get all budget entries
-router.get('/', async (req, res) => {
-    try {
-        const budgets = await Budget.find();
-        res.status(200).json({ success: true, budgets });
-    } catch (err) {
-        res.status(400).json({ error: err.message });
-    }
+router.route("/display").get((req, res) => {
+    Budget.find().then((Budget)=>{
+        res.json(Budget)
+    }).catch((err)=>{
+        console.log(err)
+    })
 });
 
 // Get a specific budget entry

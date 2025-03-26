@@ -21,3 +21,6 @@ mongoose.connect("mongodb+srv://thenularandila2002:Thenula2002@cluster0.tzu8j.mo
 // Access to remind
 const reminds = require("./routes/remindRoutes");
 app.use("/notification", reminds);
+
+const budget = require("./routes/budgetRoutes");
+app.use("/budget", budget);

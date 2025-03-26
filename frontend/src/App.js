@@ -8,6 +8,10 @@ import InventoryForm from './components/InventoryForm';
 import InventoryList from './components/InventoryList';
 import Report from './components/Report';
 
+import InventoryForm from './component/InventoryForm';
+import InventoryList from './component/InventoryList';
+import Report from './component/Report';
+
 function App() {
   return (
     <div className="App">
@@ -16,6 +20,10 @@ function App() {
           <Route path="/add" element={<AddRemind/>} />
           <Route path="/updateremind/:id" element={<UpdateRemind/>} /> 
   
+          <Route path="/invform" element={<InventoryForm/>} />
+          <Route path="/invlist" element={<InventoryList/>} /> 
+          <Route path="/invreport" element={<Report/>} /> 
+
           <Route path="/invform" element={<InventoryForm/>} />
           <Route path="/invlist" element={<InventoryList/>} /> 
           <Route path="/invreport" element={<Report/>} /> 

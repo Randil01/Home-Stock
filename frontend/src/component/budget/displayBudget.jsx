@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { jsPDF } from "jspdf";
-import autoTable from "jspdf-autotable"; // Ensure the direct import if needed
+import jsPDF from "jspdf";
+import "jspdf-autotable";
 
 function BudgetReport() {
   const [budgets, setBudgets] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState("");
 
   // Fetch budget data from MongoDB
   useEffect(() => {
     const fetchBudgets = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/budget/display");
-        setBudgets(response.data); // Assuming response.data is an array
+        const response = await axios.get("http://localhost:5000/budget/display"); // Adjust API URL if needed
+        setBudgets(response.data);  // Directly setting the budget entries
         setLoading(false);
       } catch (error) {
         console.error("Error fetching budgets:", error);
@@ -21,6 +22,20 @@ function BudgetReport() {
     };
     fetchBudgets();
   }, []);
+
+  // Handle search input change
+  const handleSearchChange = (event) => {
+    setSearchQuery(event.target.value);
+  };
+
+  // Filtered budgets based on search query
+  const filteredBudgets = budgets.filter(
+    (budget) =>
+      budget.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      budget.amount.toString().includes(searchQuery) ||
+      budget.status.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (budget.description && budget.description.toLowerCase().includes(searchQuery.toLowerCase()))
+  );
 
   // Generate PDF report
   const generatePDF = () => {
@@ -31,7 +46,7 @@ function BudgetReport() {
     const headers = [["Category", "Amount ($)", "Due Date", "Status", "Description"]];
 
     // Table data
-    const data = budgets.map(item => [
+    const data = filteredBudgets.map(item => [
       item.category,
       item.amount.toFixed(2),
       new Date(item.dueDate).toLocaleDateString(),
@@ -39,20 +54,35 @@ function BudgetReport() {
       item.description || "N/A"
     ]);
 
-    // Generate table using autoTable
-    autoTable(doc, {
+    // Generate table
+    doc.autoTable({
       head: headers,
       body: data,
       startY: 25,
     });
 
-    // Save the PDF file
-    doc.save("Budget_Entries_Report.pdf");
+    doc.save("Budget_Entries_Report.pdf"); // Save as PDF
   };
 
   return (
     <div style={{ padding: "20px" }}>
       <h2>Budget Entries</h2>
+
+      {/* Search Bar */}
+      <input
+        type="text"
+        placeholder="Search by Category, Amount, Status, Description"
+        value={searchQuery}
+        onChange={handleSearchChange}
+        style={{
+          padding: "10px",
+          marginBottom: "15px",
+          width: "100%",
+          border: "1px solid #ccc",
+          borderRadius: "5px",
+        }}
+      />
+
       {loading ? (
         <p>Loading budget entries...</p>
       ) : (
@@ -68,8 +98,8 @@ function BudgetReport() {
               </tr>
             </thead>
             <tbody>
-              {budgets.length > 0 ? (
-                budgets.map((item, index) => (
+              {filteredBudgets.length > 0 ? (
+                filteredBudgets.map((item, index) => (
                   <tr key={index}>
                     <td>{item.category}</td>
                     <td>${item.amount.toFixed(2)}</td>
@@ -86,6 +116,7 @@ function BudgetReport() {
             </tbody>
           </table>
 
+          {/* Download PDF Button */}
           <button
             onClick={generatePDF}
             style={{

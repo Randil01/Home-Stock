@@ -3,6 +3,10 @@ import AddRemind from "./component/reminds/addRemind";
 import DisplayRemind from "./component/reminds/displayReminds";
 import UpdateRemind from "./component/reminds/updateRemind"
 
+//Import Budget
+import AddBudget from "./component/budget/addBudget";
+import UpdateBudget from './component/budget/updateBudget';
+
 
 function App() {
   return (
@@ -11,6 +15,11 @@ function App() {
           <Route path="/" element={<DisplayRemind/>} />
           <Route path="/add" element={<AddRemind/>} />
           <Route path="/updateremind/:id" element={<UpdateRemind/>} />
+
+          {/*New Route*/}
+          <Route path="/" element={<AddBudget/>} />
+          <Route path="/" element={<UpdateBudget/>} />
+
       </Routes>
     </div>
   );

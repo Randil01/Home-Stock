@@ -1,11 +1,11 @@
 const router = require("express").Router();
-const phone = require("../model/phoneModel");
+const mail = require("../model/phoneModel");
 
 router.route("/add").post((req, res)=>{
 
-    const number = req.body.number;
-    const newNumber = new phone({
-        number,
+    const email = req.body.email;
+    const newNumber = new mail({
+        email,
     })
 
     newNumber.save().then(()=>{

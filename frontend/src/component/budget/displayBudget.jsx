@@ -2,11 +2,13 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
+import './BudgetReport.css'; // Import the CSS
 
 function BudgetReport() {
   const [budgets, setBudgets] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");  // State for search query
+  const [filteredBudgets, setFilteredBudgets] = useState([]);  // State for filtered results
 
   // Fetch budget data from MongoDB
   useEffect(() => {
@@ -14,6 +16,7 @@ function BudgetReport() {
       try {
         const response = await axios.get("http://localhost:5000/budget/display"); // Adjust API URL if needed
         setBudgets(response.data);  // Directly setting the budget entries
+        setFilteredBudgets(response.data);  // Initially, show all budgets
         setLoading(false);
       } catch (error) {
         console.error("Error fetching budgets:", error);
@@ -28,14 +31,15 @@ function BudgetReport() {
     setSearchQuery(event.target.value);
   };
 
-  // Filtered budgets based on search query
-  const filteredBudgets = budgets.filter(
-    (budget) =>
+  // Perform search filter
+  const handleSearch = () => {
+    const filtered = budgets.filter((budget) =>
       budget.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      budget.amount.toString().includes(searchQuery) ||
       budget.status.toLowerCase().includes(searchQuery.toLowerCase()) ||
       (budget.description && budget.description.toLowerCase().includes(searchQuery.toLowerCase()))
-  );
+    );
+    setFilteredBudgets(filtered);
+  };
 
   // Generate PDF report
   const generatePDF = () => {
@@ -65,31 +69,28 @@ function BudgetReport() {
   };
 
   return (
-    <div style={{ padding: "20px" }}>
-      <h2>Budget Entries</h2>
+    <div className="budget-container">
+      <h2 className="budget-title">Budget Entries</h2>
 
-      {/* Search Bar */}
-      <input
-        type="text"
-        placeholder="Search by Category, Amount, Status, Description"
-        value={searchQuery}
-        onChange={handleSearchChange}
-        style={{
-          padding: "10px",
-          marginBottom: "15px",
-          width: "100%",
-          border: "1px solid #ccc",
-          borderRadius: "5px",
-        }}
-      />
+      {/* Search Input and Button */}
+      <div className="search-container">
+        <input
+          type="text"
+          className="search-input"
+          placeholder="Search by category, status, or description"
+          value={searchQuery}
+          onChange={handleSearchChange}
+        />
+        <button onClick={handleSearch} className="search-btn">Search</button>
+      </div>
 
       {loading ? (
         <p>Loading budget entries...</p>
       ) : (
         <>
-          <table border="1" style={{ width: "100%", borderCollapse: "collapse", marginBottom: "10px" }}>
+          <table className="budget-table">
             <thead>
-              <tr style={{ backgroundColor: "#f2f2f2" }}>
+              <tr>
                 <th>Category</th>
                 <th>Amount ($)</th>
                 <th>Due Date</th>
@@ -117,17 +118,7 @@ function BudgetReport() {
           </table>
 
           {/* Download PDF Button */}
-          <button
-            onClick={generatePDF}
-            style={{
-              padding: "10px 15px",
-              backgroundColor: "#007bff",
-              color: "#fff",
-              border: "none",
-              cursor: "pointer",
-              borderRadius: "5px",
-            }}
-          >
+          <button onClick={generatePDF} className="download-btn">
             Download PDF
           </button>
         </>

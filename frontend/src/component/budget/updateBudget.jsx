@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import axios from "axios";
 import { useNavigate } from "react-router";
 import { useParams } from "react-router";
+import './UpdateBudget.css';
+
 
 function UpdateBudget() {
     const history = useNavigate();

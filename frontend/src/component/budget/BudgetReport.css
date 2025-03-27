@@ -1,0 +1,168 @@
+/* Global Styles */
+
+/* Reset default styles for all elements */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Set the background for the entire webpage */
+body {
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg, #f0e6f6, #d6f5f3); /* Soft pastel gradient */
+  min-height: 100vh;  /* Full height of the screen */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 10px;  /* Add a little padding on the sides */
+  color: #333;
+}
+
+/* Main container */
+.budget-container {
+  width: 100%;
+  max-width: 1200px;
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 30px;  /* Margin to avoid touching the top of the page */
+  margin-bottom: 30px;  /* Margin to avoid touching the bottom of the page */
+}
+
+/* Title of the Budget Entries */
+.budget-title {
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #333;
+  text-align: center;
+}
+
+/* Table styling */
+.budget-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.budget-table th {
+  padding: 12px;
+  background-color: #f2f2f2;
+  text-align: left;
+  font-weight: bold;
+  color: #333;
+  border-bottom: 2px solid #ddd;
+}
+
+.budget-table td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.budget-table tr:hover {
+  background-color: #f7f7f7;
+}
+
+.budget-table td[colspan="5"] {
+  text-align: center;
+  font-style: italic;
+  color: #888;
+}
+
+/* Button for downloading PDF */
+.download-btn {
+  padding: 10px 15px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  display: block;
+  margin: 20px auto;
+  transition: background-color 0.3s ease;
+}
+
+.download-btn:hover {
+  background-color: #218838;
+}
+
+.download-btn:active {
+  background-color: #1e7e34;
+}
+
+/* Search bar container */
+.search-container {
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 20px;
+  width: 100%;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Search input field */
+.search-input {
+  padding: 10px;
+  margin-right: 10px;
+  width: 250px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  outline: none;
+}
+
+/* Search button */
+.search-btn {
+  padding: 10px 15px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.search-btn:hover {
+  background-color: #0056b3;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .search-input {
+    width: 180px;
+  }
+
+  .budget-table th, .budget-table td {
+    padding: 8px;
+  }
+
+  .budget-title {
+    font-size: 24px;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    padding: 0 5px; /* Reduce padding for smaller screens */
+  }
+
+  .budget-container {
+    padding: 15px;
+  }
+
+  .search-input {
+    width: 150px;
+  }
+
+  .budget-title {
+    font-size: 20px;
+  }
+
+  .budget-table th, .budget-table td {
+    padding: 6px;
+  }
+}

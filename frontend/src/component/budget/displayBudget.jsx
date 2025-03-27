@@ -9,6 +9,7 @@ function BudgetReport() {
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");  
   const [filteredBudgets, setFilteredBudgets] = useState([]);  
+  const [editingBudget, setEditingBudget] = useState(null); // State to hold the budget being edited
 
   // Fetch budget data from MongoDB
   useEffect(() => {
@@ -56,6 +57,19 @@ function BudgetReport() {
     }
   };
 
+  // Handle updating a budget entry
+  const handleUpdate = async () => {
+    try {
+      await axios.put(`http://localhost:5000/budget/update/${editingBudget._id}`, editingBudget);
+      alert("Budget entry updated successfully!");
+      setEditingBudget(null); // Clear the form after update
+      fetchBudgets(); // Refresh the data
+    } catch (error) {
+      console.error("Error updating budget:", error);
+      alert("Failed to update budget entry.");
+    }
+  };
+
   // Generate PDF report
   const generatePDF = () => {
     const doc = new jsPDF();
@@ -100,6 +114,11 @@ function BudgetReport() {
     doc.save("Budget_Entries_Report.pdf"); // Save as PDF
   };
 
+  // Handle editing a budget entry (set state to show edit form)
+  const handleEdit = (budget) => {
+    setEditingBudget(budget);
+  };
+
   return (
     <div className="budget-container">
       <h2 className="budget-title">Budget Entries</h2>
@@ -140,6 +159,9 @@ function BudgetReport() {
                     <td>{item.status}</td>
                     <td>{item.description || "N/A"}</td>
                     <td>
+                      <button onClick={() => handleEdit(item)} className="edit-btn">
+                        Edit
+                      </button>
                       <button onClick={() => handleDelete(item._id)} className="delete-btn">
                         Delete
                       </button>
@@ -158,6 +180,34 @@ function BudgetReport() {
           <button onClick={generatePDF} className="download-btn">
             Download PDF
           </button>
+
+          {/* Edit Budget Form */}
+          {editingBudget && (
+            <div className="edit-form">
+              <h3>Edit Budget</h3>
+              <input
+                type="text"
+                value={editingBudget.category}
+                onChange={(e) => setEditingBudget({ ...editingBudget, category: e.target.value })}
+              />
+              <input
+                type="number"
+                value={editingBudget.amount}
+                onChange={(e) => setEditingBudget({ ...editingBudget, amount: e.target.value })}
+              />
+              <input
+                type="date"
+                value={editingBudget.dueDate}
+                onChange={(e) => setEditingBudget({ ...editingBudget, dueDate: e.target.value })}
+              />
+              <textarea
+                value={editingBudget.description}
+                onChange={(e) => setEditingBudget({ ...editingBudget, description: e.target.value })}
+              />
+              <button onClick={handleUpdate}>Update Budget</button>
+              <button onClick={() => setEditingBudget(null)}>Cancel</button>
+            </div>
+          )}
         </>
       )}
     </div>

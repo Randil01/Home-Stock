@@ -16,8 +16,32 @@ class InventoryForm extends React.Component {
     this.setState({ [e.target.name]: e.target.value });
   };
 
+  validateDates = () => {
+    const { purchaseDate, restockDate } = this.state;
+    const today = new Date();
+    const twoDaysAgo = new Date();
+    twoDaysAgo.setDate(today.getDate() - 2);
+
+    const purchase = new Date(purchaseDate);
+    const restock = new Date(restockDate);
+
+    if (purchase < twoDaysAgo || purchase > today) {
+      alert("Purchase date should be today or within the last two days.");
+      return false;
+    }
+
+    if (restock <= purchase || (restock - purchase) / (1000 * 60 * 60 * 24) < 2) {
+      alert("Restock date should be at least two days after the purchase date.");
+      return false;
+    }
+
+    return true;
+  };
+
+
   handleSubmit = async (e) => {
     e.preventDefault();
+    if(!this.validateDates()) return;
     await axios.post('http://localhost:5000/api/inventory/add', this.state);
     this.setState({
       productName: '',

@@ -43,23 +43,25 @@ body {
 /* Table styling */
 .budget-table {
   width: 100%;
-  border-collapse: collapse;
-  margin-bottom: 20px;
+  border-collapse: separate;  /* Use separate borders for columns */
+  border-spacing: 15px;  /* Increased spacing between columns */
+  margin-bottom: 20px;  /* Margin below the table */
+}
+
+.budget-table th, .budget-table td {
+  padding: 15px;  /* Increased padding for more column space */
+  text-align: left;
+  border-bottom: 1px solid #ddd;
 }
 
 .budget-table th {
-  padding: 12px;
   background-color: #f2f2f2;
-  text-align: left;
   font-weight: bold;
   color: #333;
-  border-bottom: 2px solid #ddd;
 }
 
 .budget-table td {
-  padding: 12px;
-  text-align: left;
-  border-bottom: 1px solid #ddd;
+  color: #333;
 }
 
 .budget-table tr:hover {
@@ -128,6 +130,27 @@ body {
 
 .search-btn:hover {
   background-color: #0056b3;
+}
+
+/* Delete button */
+.delete-btn {
+  padding: 8px 12px;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+  font-size: 14px;
+  margin-left: 10px;  /* To add space between the delete button and other elements */
+}
+
+.delete-btn:hover {
+  background-color: #c82333;
+}
+
+.delete-btn:active {
+  background-color: #a71d2a;
 }
 
 /* Responsive styles */

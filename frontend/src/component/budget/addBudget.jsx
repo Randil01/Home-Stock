@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router";
 import axios from "axios";
-import './AddBudget.css';  // Import the CSS file
+import { Form, Button, Card, Container, Row, Col } from 'react-bootstrap';
 
 function AddBudget() {
   const history = useNavigate();
@@ -83,101 +83,150 @@ function AddBudget() {
   };
 
   return (
-    <div className="form">
-      <form onSubmit={handleSubmit}>
-        <h2>Add a Budget Entry</h2>
+    <Container className="py-5">
+      <Row className="justify-content-center">
+        <Col md={8} lg={6}>
+          <Card className="shadow">
+            <Card.Header className="bg-primary text-white">
+              <h2 className="text-center mb-0">Add a Budget Entry</h2>
+            </Card.Header>
+            <Card.Body>
+              <Form onSubmit={handleSubmit}>
+                <Form.Group className="mb-3">
+                  <Form.Label>Category</Form.Label>
+                  <div className="d-flex">
+                    <Form.Select
+                      name="category"
+                      value={inputs.category}
+                      onChange={handleChange}
+                      required
+                    >
+                      <option value="" disabled>Select Category</option>
+                      <option value="Rent">Rent</option>
+                      <option value="Utility Bills">Utility Bills</option>
+                      <option value="Groceries">Groceries</option>
+                      <option value="Other Expense">Other Expense</option>
+                    </Form.Select>
+                    <Button 
+                      variant="warning" 
+                      className="ms-2" 
+                      onClick={handleClearCategory}
+                      style={{ minWidth: '80px' }}
+                    >
+                      Clear
+                    </Button>
+                  </div>
+                </Form.Group>
 
-        <div className="input-group">
-          <label htmlFor="category">Category:</label>
-          <select
-            name="category"
-            value={inputs.category}
-            onChange={handleChange}
-            required
-          >
-            <option value="" disabled>Select Category</option>
-            <option value="Rent">Rent</option>
-            <option value="Utility Bills">Utility Bills</option>
-            <option value="Groceries">Groceries</option>
-            <option value="Other Expense">Other Expense</option>
-          </select>
-          <button type="button" className="clear" onClick={handleClearCategory}>
-            Clear
-          </button>
-        </div>
+                <Form.Group className="mb-3">
+                  <Form.Label>Amount</Form.Label>
+                  <div className="d-flex">
+                    <Form.Control
+                      type="number"
+                      placeholder="Enter amount"
+                      name="amount"
+                      onChange={handleChange}
+                      value={inputs.amount}
+                      required
+                    />
+                    <Button 
+                      variant="warning" 
+                      className="ms-2" 
+                      onClick={handleClearAmount}
+                      style={{ minWidth: '80px' }}
+                    >
+                      Clear
+                    </Button>
+                  </div>
+                </Form.Group>
 
-        <div className="input-group">
-          <label htmlFor="amount">Amount:</label>
-          <input
-            type="number"
-            placeholder="Enter amount"
-            name="amount"
-            onChange={handleChange}
-            value={inputs.amount}
-            required
-          />
-          <button type="button" className="clear" onClick={handleClearAmount}>
-            Clear
-          </button>
-        </div>
+                <Form.Group className="mb-3">
+                  <Form.Label>Due Date</Form.Label>
+                  <div className="d-flex">
+                    <Form.Control
+                      type="date"
+                      name="dueDate"
+                      onChange={handleChange}
+                      value={inputs.dueDate}
+                      required
+                    />
+                    <Button 
+                      variant="warning" 
+                      className="ms-2" 
+                      onClick={handleClearDueDate}
+                      style={{ minWidth: '80px' }}
+                    >
+                      Clear
+                    </Button>
+                  </div>
+                </Form.Group>
 
-        <div className="input-group">
-          <label htmlFor="dueDate">Due Date:</label>
-          <input
-            type="date"
-            name="dueDate"
-            onChange={handleChange}
-            value={inputs.dueDate}
-            required
-          />
-          <button type="button" className="clear" onClick={handleClearDueDate}>
-            Clear
-          </button>
-        </div>
+                <Form.Group className="mb-3">
+                  <Form.Label>Status</Form.Label>
+                  <div className="d-flex">
+                    <Form.Select
+                      name="status"
+                      value={inputs.status}
+                      onChange={handleChange}
+                      required
+                    >
+                      <option value="Pending">Pending</option>
+                      <option value="Paid">Paid</option>
+                      <option value="Overdue">Overdue</option>
+                    </Form.Select>
+                    <Button 
+                      variant="warning" 
+                      className="ms-2" 
+                      onClick={handleClearStatus}
+                      style={{ minWidth: '80px' }}
+                    >
+                      Clear
+                    </Button>
+                  </div>
+                </Form.Group>
 
-        <div className="input-group">
-          <label htmlFor="status">Status:</label>
-          <select
-            name="status"
-            value={inputs.status}
-            onChange={handleChange}
-            required
-          >
-            <option value="" disabled>Select Status</option>
-            <option value="Pending">Pending</option>
-            <option value="Paid">Paid</option>
-            <option value="Overdue">Overdue</option>
-          </select>
-          <button type="button" className="clear" onClick={handleClearStatus}>
-            Clear
-          </button>
-        </div>
+                <Form.Group className="mb-3">
+                  <Form.Label>Description</Form.Label>
+                  <div className="d-flex">
+                    <Form.Control
+                      as="textarea"
+                      rows={3}
+                      name="description"
+                      onChange={handleChange}
+                      value={inputs.description}
+                      placeholder="Enter bill details"
+                      required
+                    />
+                    <Button 
+                      variant="warning" 
+                      className="ms-2 align-self-start" 
+                      onClick={handleClearDescription}
+                      style={{ minWidth: '80px' }}
+                    >
+                      Clear
+                    </Button>
+                  </div>
+                </Form.Group>
 
-        <div className="input-group">
-          <label htmlFor="description">Description:</label>
-          <textarea
-            name="description"
-            onChange={handleChange}
-            value={inputs.description}
-            placeholder="Enter bill details"
-            required
-          ></textarea>
-          <button type="button" className="clear" onClick={handleClearDescription}>
-            Clear
-          </button>
-        </div>
+                <div className="d-flex justify-content-center gap-2">
+                  <Button variant="success" type="submit" size="3g">
+                    Submit
+                  </Button>
+                  <Button 
+                    variant="danger"          // Red color theme
+                    onClick={() => history("/")} 
+                    size="3g"                 // Large size
+                  >
+                  Close
+                  </Button>
 
-        <div className="button-container">
-          <button type="submit">Submit</button>
-          <button
-            type="button"
-            className="back"
-            onClick={() => history("/")}>
-            ✖ Close
-          </button>
-        </div>
-      </form>
-    </div>
+                </div>
+              </Form>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
+    </Container>
   );
 }
 

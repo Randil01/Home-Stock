@@ -58,7 +58,13 @@ function BudgetReport() {
       alert("No budget entry selected for update");
       return;
     }
-    
+  
+    // Validate that the fields are not empty
+    if (!editingBudget.category || !editingBudget.amount || !editingBudget.dueDate) {
+      alert("Please fill in all fields (Category, Amount, Due Date).");
+      return;
+    }
+  
     try {
       await axios.put(`http://localhost:5000/budget/update/${editingBudget._id}`, editingBudget);
       alert("Budget entry updated successfully!");
@@ -69,6 +75,7 @@ function BudgetReport() {
       alert("Failed to update budget entry.");
     }
   };
+  
 
   const generatePDF = () => {
     const doc = new jsPDF();

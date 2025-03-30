@@ -108,8 +108,8 @@ function AddBudget() {
                       <option value="Other Expense">Other Expense</option>
                     </Form.Select>
                     <Button 
-                      variant="warning" 
-                      className="ms-2" 
+                      variant="warning"
+                      className="ms-2"
                       onClick={handleClearCategory}
                       style={{ minWidth: '80px' }}
                     >

@@ -23,14 +23,7 @@ function AddBudget() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const today = new Date();
-    const selectedDate = new Date(inputs.dueDate);
-
-    if (selectedDate <= today) {
-      alert("You can only set due dates for upcoming bills");
-      return;
-    }
-
+    // Removed the date validation, so you can select any date
     console.log(inputs);
     await sendRequest();
     history("/"); // Redirect to the home page after submission

@@ -34,19 +34,26 @@ function RemindersAll() {
       alert("Please enter a valid email address.");
       return;
     }
-    
-    try {
-      const response = await axios.post('http://localhost:5000/email/add', {
-        email
-      });
   
-      alert(response.data.message || 'Email saved successfully!');
-    
-      setEmail(''); // Reset email after successful submission
+    try {
+      // First, check if the email already exists
+      const checkResponse = await axios.get(`http://localhost:5000/email/check?email=${email}`);
+      
+      if (checkResponse.data.exists) {
+        alert("This email is already registered.");
+        return;
+      }
+  
+      // Proceed with saving the email
+      const response = await axios.post("http://localhost:5000/email/add", { email });
+      alert(response.data.message || "Email saved successfully!");
+  
+      setEmail(""); // Reset email input
     } catch (error) {
-      alert('Error saving email: ' + (error.response ? error.response.data.message : error.message));
+      alert("Error saving email: " + (error.response ? error.response.data.message : error.message));
     }
   };
+  
 
   const filteredReminders = reminders.filter(
     (remind) =>

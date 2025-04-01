@@ -22,5 +22,5 @@ mongoose.connect("mongodb+srv://thenularandila2002:Thenula2002@cluster0.tzu8j.mo
 const reminds = require("./routes/remindRoutes");
 app.use("/notification", reminds);
 
-const number = require("./routes/phoneRoutes");
+const number = require("./routes/emailRoutes");
 app.use("/email",number);

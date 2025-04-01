@@ -9,6 +9,7 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.8.4",
     "jspdf-autotable": "^5.0.2",
+    "jspdf": "^3.0.1",
     "node-mailjet": "^6.0.8",
     "postmark": "^4.0.5",
     "react": "^19.0.0",

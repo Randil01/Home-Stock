@@ -128,26 +128,60 @@ class InventoryList extends React.Component {
     downloadBillPDF = () => {
         const { bill } = this.state;
         const doc = new jsPDF();
-
-        doc.text('Grocery Bill', 10, 10);
-        let y = 20;
-
+        
+        // Set "HomeStock" with a light green color
+        doc.setTextColor(34, 177, 76); // RGB for light green
+        doc.setFontSize(22);
+        doc.setFont("helvetica", "bold");
+        doc.text("HomeStock", 105, 15, { align: "center" });
+    
+        // Reset text color to black for the rest of the content
+        doc.setTextColor(0, 0, 0);
+    
+        // Add "Grocery Bill" below HomeStock
+        doc.setFontSize(18);
+        doc.text("Grocery Bill", 105, 25, { align: "center" });
+    
+        // Underline the entire headline (full page width)
+        doc.setLineWidth(0.7);
+        doc.line(10, 30, 200, 30); // Underline from left to right of the page
+    
+        // Add current date with a clear gap below the underline
+        const currentDate = new Date().toLocaleDateString();
         doc.setFontSize(12);
-        doc.text('Product Name            Purchase Date            Quantity            Category', 10, y);
+        doc.text(`Date: ${currentDate}`, 10, 40);
+    
+        let y = 50; // Adjusted to provide a clearer gap
+    
+        // Column titles
+        doc.setFontSize(12);
+        doc.setFont("helvetica", "bold");
+        doc.text("Product Name", 10, y);
+        doc.text("Purchase Date", 60, y);
+        doc.text("Quantity", 110, y);
+        doc.text("Category", 140, y);
+        
         y += 10;
-
+    
+        // Reset font to normal
+        doc.setFont("helvetica", "normal");
+    
+        // Populate table rows
         bill.forEach((item) => {
-            doc.text(
-                `${item.productName.padEnd(20)} ${item.purchaseDate.padEnd(20)} ${String(item.purchaseQuantity).padEnd(15)} ${item.productCategory}`,
-                10,
-                y
-            );
+            doc.text(item.productName, 10, y);
+            doc.text(new Date(item.purchaseDate).toLocaleDateString(), 60, y);
+            doc.text(String(item.purchaseQuantity), 110, y);
+            doc.text(item.productCategory, 140, y);
             y += 10;
         });
-
-        doc.save('grocery_bill.pdf');
+    
+        // Save the PDF
+        doc.save("grocery_bill.pdf");
     };
-
+    
+    
+    
+    
     render() {
         const { items, showUpdateModal, selectedItem, showAddModal, newItem, report, bill } = this.state;
 

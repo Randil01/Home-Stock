@@ -23,9 +23,11 @@ const reminds = require("./routes/remindRoutes");
 const budget = require("./routes/budgetRoutes");
 const number = require("./routes/emailRoutes");
 const inventoryRoutes = require('./routes/inventoryRoutes');
+const check = require('./routes/restockroute')
 
 app.use("/notification", reminds);
 app.use("/email",number);
 app.use('/api/inventory', inventoryRoutes);
+app.use('/checkRestock',check);
 app.use("/budget", budget);
 

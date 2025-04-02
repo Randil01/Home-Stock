@@ -108,22 +108,53 @@ class InventoryList extends React.Component {
     downloadPurchaseReportPDF = () => {
         const { report } = this.state;
         const doc = new jsPDF();
-
-        doc.text('Purchase Report', 10, 10);
-        let y = 20;
-
+    
+        // Set "HomeStock" with a light green color
+        doc.setTextColor(34, 177, 76); // Light green
+        doc.setFontSize(22);
+        doc.setFont("helvetica", "bold");
+        doc.text("HomeStock", 105, 15, { align: "center" });
+    
+        // Reset text color to black for the rest of the content
+        doc.setTextColor(0, 0, 0);
+    
+        // Add "Purchase Report" below HomeStock
+        doc.setFontSize(18);
+        doc.text("Purchase Report", 105, 25, { align: "center" });
+    
+        // Underline the title (full page width)
+        doc.setLineWidth(0.7);
+        doc.line(10, 30, 200, 30); // Underline from left to right of the page
+    
+        // Add current date with a clear gap below the underline
+        const currentDate = new Date().toLocaleDateString();
         doc.setFontSize(12);
-        doc.text('Product Name            Purchase Date            Category', 10, y);
+        doc.text(`Date: ${currentDate}`, 10, 40);
+    
+        let y = 50; // Start content below the date
+    
+        // Table Header
+        doc.setFontSize(12);
+        doc.setFont("helvetica", "bold");
+        doc.text("Product Name", 10, y);
+        doc.text("Purchase Date", 80, y);
+        doc.text("Category", 150, y);
         y += 10;
-
+    
+        doc.setFont("helvetica", "normal");
+    
+        // Table Content
         report.forEach((item) => {
             const purchaseDate = new Date(item.purchaseDate).toLocaleDateString();
-            doc.text(`${item.productName.padEnd(20)} ${purchaseDate.padEnd(20)} ${item.productCategory}`, 10, y);
+            doc.text(item.productName, 10, y);
+            doc.text(purchaseDate, 80, y);
+            doc.text(item.productCategory, 150, y);
             y += 10;
         });
-
-        doc.save('purchase_report.pdf');
+    
+        doc.save("purchase_report.pdf");
     };
+    
 
     downloadBillPDF = () => {
         const { bill } = this.state;

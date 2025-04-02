@@ -1,43 +1,72 @@
 const express = require('express');
 const router = express.Router();
-const grocery = require('../model/inventory');
-const User = require('../model/phoneModel');
+const cron = require('node-cron'); 
+const Grocery = require('../model/Inventory');
+const User = require('../model/emailModel');
 const moment = require('moment');
-const { sendEmail } = require('../utils/mailjet');  
+const { sendEmail } = require('../routes/mailjet');
 
 // Function to check restock items and notify users
 const checkRestockAndNotify = async () => {
   try {
-    const partners = await grocery.find();  // Get all partner data
+    const items = await Grocery.find(); // Corrected variable name from 'item' to 'items'
+    const users = await User.find();
+
+    if (users.length === 0) {
+      console.log('No users found to send notifications.');
+      return;
+    }
 
     const today = moment();
     const threeDaysFromNow = moment().add(3, 'days');
 
-    partners.forEach(async (partner) => {
-      const isRestockDue = moment(partner.restockDate).isBetween(today, threeDaysFromNow, null, '[]');
-      if (isRestockDue || partner.restockQuantity === 0) {
-        const users = await User.find();  // Get all users to notify
-        const subject = `Restock Notification: ${partner.itemName}`;
-        const text = `Dear User, \n\nThe item "${partner.itemName}" is due for restock on ${moment(partner.restockDate).format('YYYY-MM-DD')}. The restock quantity is ${partner.restockQuantity}.\n\nBest regards, \nHome Stock`;
+    // Filter restock items
+    const restockItems = items.filter(item =>
+      moment(item.restockDate).isBetween(today, threeDaysFromNow, null, '[]') ||
+      item.restockQuantity === 0
+    );
 
-        // Notify all users
-        users.forEach((user) => {
-          sendEmail(user.email, subject, text);  // Send email using Mailjet
-        });
+    if (restockItems.length === 0) {
+      console.log('✅ No restock items due in the next 3 days.');
+      return;
+    }
+
+    for (const item of restockItems) {
+      const subject = `🔔 Restock Alert: ${item.productName}`;
+      const text = `Dear User\n, 
+
+    The item "${item.productName}" needs restocking by ${moment(item.restockDate).format('YYYY-MM-DD')}.\n 
+    Current stock: ${item.restockQuantity}.\n
+
+    Best regards,\n
+    Home Stock`;
+
+      // Send email to all users
+      for (const user of users) {
+        await sendEmail(user.email, subject, text);  // Send emails one by one
       }
-    });
+    }
+
+    console.log('Restock notifications sent successfully.');
   } catch (error) {
-    console.log('Error checking restock items:', error);
+    console.error('Error checking restock items:', error);
   }
 };
 
+// API Route to Trigger Restock Check Manually
 router.get('/checkRestock', async (req, res) => {
   try {
-    await checkRestockAndNotify();  // Check restock items and notify
-    res.status(200).send('Restock check completed');
+    await checkRestockAndNotify();
+    res.status(200).json({ message: 'Restock check completed successfully.' });
   } catch (error) {
-    res.status(500).send('Error in checking restock');
+    res.status(500).json({ error: 'Error in checking restock' });
   }
+});
+
+// automatically using Cron Job
+cron.schedule('0 0 */2 * *', async () => {//cheking after one min to min '*/1 * * * *'
+  console.log('Running scheduled restock check...');
+  await checkRestockAndNotify();
 });
 
 module.exports = router;

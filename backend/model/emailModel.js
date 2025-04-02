@@ -11,5 +11,5 @@ const numberSchema = new schema({
     
 });
 
-const number = mongoose.model("phoneModel",numberSchema);
+const number = mongoose.model("emailModel",numberSchema);
 module.exports = number;

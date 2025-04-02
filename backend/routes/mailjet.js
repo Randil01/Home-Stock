@@ -1,34 +1,33 @@
-const mailjet = require('node-mailjet').connect('17919e91b89ea7d9abf6cceb14313145', '581db2d4ccf9ba9d4fdfd3bb36dfe906');
+const mailjet = require('node-mailjet').apiConnect(
+  '17919e91b89ea7d9abf6cceb14313145', 
+  '581db2d4ccf9ba9d4fdfd3bb36dfe906'
+);
 
-const sendEmail = (toEmail, subject, text) => {
-  const request = mailjet
-    .post('send', { version: 'v3.1' })
-    .request({
-      Messages: [
-        {
-          From: {
-            Email: 'your-email@example.com', // Your email address
-            Name: 'Home Stock',
-          },
-          To: [
-            {
-              Email: toEmail,  // Recipient email address
+const sendEmail = async (toEmail, subject, text) => {
+  try {
+    const request = await mailjet
+      .post('send', { version: 'v3.1' })
+      .request({
+        Messages: [
+          {
+            From: {
+              Email: 'thenularandila2002@gmail.com',
+              Name: 'Home Stock',
             },
-          ],
-          Subject: subject,
-          TextPart: text,
-          HTMLPart: `<h3>${text}</h3>`,  // Optional HTML content
-        },
-      ],
-    });
+            To: [{ Email: toEmail }], //Send email to one recipient at a time
+            Subject: subject,
+            TextPart: text,
+            HTMLPart: `<h3>${text}</h3>`, 
+          },
+        ],
+      });
 
-  request
-    .then((result) => {
-      console.log('Email sent successfully:', result.body);
-    })
-    .catch((err) => {
-      console.log('Error sending email:', err);
-    });
+    console.log(`Email sent to ${toEmail}:`, request.body);
+    return { success: true };
+  } catch (error) {
+    console.error(`Error sending email to ${toEmail}:`, error);
+    return { success: false, error };
+  }
 };
 
 module.exports = { sendEmail };

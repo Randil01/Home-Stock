@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import jsPDF from "jspdf";
-import "jspdf-autotable";
+import autoTable from "jspdf-autotable";
 import { Table, Button, Container, Form, Card, Row, Col } from 'react-bootstrap';
 
 function BudgetReport() {
@@ -58,13 +58,12 @@ function BudgetReport() {
       alert("No budget entry selected for update");
       return;
     }
-  
-    // Validate that the fields are not empty
+
     if (!editingBudget.category || !editingBudget.amount || !editingBudget.dueDate) {
       alert("Please fill in all fields (Category, Amount, Due Date).");
       return;
     }
-  
+
     try {
       await axios.put(`http://localhost:5000/budget/update/${editingBudget._id}`, editingBudget);
       alert("Budget entry updated successfully!");
@@ -75,11 +74,11 @@ function BudgetReport() {
       alert("Failed to update budget entry.");
     }
   };
-  
 
   const generatePDF = () => {
     const doc = new jsPDF();
     const title = "Budget Entries Report";
+
     doc.setFontSize(16);
     const pageWidth = doc.internal.pageSize.width;
     const titleWidth = doc.getTextWidth(title);
@@ -97,7 +96,7 @@ function BudgetReport() {
       item.description || "N/A"
     ]);
 
-    doc.autoTable({
+    autoTable(doc, {
       head: headers,
       body: data,
       startY: 35,
@@ -222,17 +221,8 @@ function BudgetReport() {
                           onChange={(e) => setEditingBudget({ ...editingBudget, dueDate: e.target.value })}
                         />
                       </Form.Group>
-                      <Form.Group className="mb-3">
-                        <Form.Label>Description</Form.Label>
-                        <Form.Control
-                          as="textarea"
-                          rows={3}
-                          value={editingBudget?.description || ''}
-                          onChange={(e) => setEditingBudget({ ...editingBudget, description: e.target.value })}
-                        />
-                      </Form.Group>
                       <div className="d-flex justify-content-center gap-2">
-                        <Button variant="success" onClick={handleUpdate}>Update Budget</Button>
+                        <Button variant="success" onClick={handleUpdate}>Update</Button>
                         <Button variant="secondary" onClick={() => setEditingBudget(null)}>Cancel</Button>
                       </div>
                     </Form>

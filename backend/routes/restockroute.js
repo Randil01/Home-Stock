@@ -1,15 +1,15 @@
 const express = require('express');
 const router = express.Router();
 const cron = require('node-cron'); 
-const Grocery = require('../model/inventory');
+const Grocery = require('../model/Inventory');
 const User = require('../model/emailModel');
 const moment = require('moment');
-const { sendEmail } = require('../utils/mailjet');
+const { sendEmail } = require('../routes/mailjet');
 
 // Function to check restock items and notify users
 const checkRestockAndNotify = async () => {
   try {
-    const items = await Grocery.find();
+    const items = await Grocery.find(); // Corrected variable name from 'item' to 'items'
     const users = await User.find();
 
     if (users.length === 0) {
@@ -20,6 +20,7 @@ const checkRestockAndNotify = async () => {
     const today = moment();
     const threeDaysFromNow = moment().add(3, 'days');
 
+    // Filter restock items
     const restockItems = items.filter(item =>
       moment(item.restockDate).isBetween(today, threeDaysFromNow, null, '[]') ||
       item.restockQuantity === 0
@@ -31,23 +32,24 @@ const checkRestockAndNotify = async () => {
     }
 
     for (const item of restockItems) {
-      const subject = `🔔 Restock Alert: ${item.itemName}`;
-      const text = `Dear User, 
+      const subject = `🔔 Restock Alert: ${item.productName}`;
+      const text = `Dear User\n, 
 
-The item "${item.itemName}" needs restocking by ${moment(item.restockDate).format('YYYY-MM-DD')}. 
-Current stock: ${item.restockQuantity}.
+    The item "${item.productName}" needs restocking by ${moment(item.restockDate).format('YYYY-MM-DD')}.\n 
+    Current stock: ${item.restockQuantity}.\n
 
-Best regards, 
-Home Stock`;
+    Best regards,\n
+    Home Stock`;
 
+      // Send email to all users
       for (const user of users) {
-        await sendEmail(user.email, subject, text);  //Send emails one by one
+        await sendEmail(user.email, subject, text);  // Send emails one by one
       }
     }
 
     console.log('Restock notifications sent successfully.');
   } catch (error) {
-    console.error(' Error checking restock items:', error);
+    console.error('Error checking restock items:', error);
   }
 };
 
@@ -61,8 +63,8 @@ router.get('/checkRestock', async (req, res) => {
   }
 });
 
-// Automate with a Cron Job
-cron.schedule('*/5 * * * *', async () => {
+// automatically using Cron Job
+cron.schedule('0 0 */2 * *', async () => {//cheking after one min to min '*/1 * * * *'
   console.log('Running scheduled restock check...');
   await checkRestockAndNotify();
 });

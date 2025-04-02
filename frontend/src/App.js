@@ -14,6 +14,7 @@ import BudgetReport from './component/budget/displayBudget';
 import InventoryForm from './component/InventoryForm';
 import InventoryList from './component/InventoryList';
 import Report from './component/Report';
+import Home from './component/home/home';
 
 function App() {
   return (
@@ -64,6 +65,7 @@ function App() {
             <Report />
           </ProtectedRoute>
         } />
+          <Route path="/home" element={<Home/>} />
       </Routes>
     </div>
   );

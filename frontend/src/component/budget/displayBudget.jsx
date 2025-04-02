@@ -3,6 +3,7 @@ import axios from "axios";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import { Table, Button, Container, Form, Card, Row, Col } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
 function BudgetReport() {
   const [budgets, setBudgets] = useState([]);
@@ -110,7 +111,15 @@ function BudgetReport() {
   };
 
   return (
-    <Container className="py-5">
+    <Container className="mt-4">
+      <div className="d-flex justify-content-end mb-4">
+        <Link to="/addBudget">
+          <Button variant="secondary">
+            <span className="me-2">+</span>Add Budget
+          </Button>
+        </Link>
+      </div>
+      
       <Card className="shadow">
         <Card.Header className="bg-primary text-white">
           <h2 className="text-center mb-0">Budget Entries</h2>

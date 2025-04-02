@@ -18,12 +18,13 @@ class InventoryList extends React.Component {
             restockQuantity: ''
         },
         report: [], // For purchase report
-        bill: []    // For grocery bill
+        bill: [],   // For grocery bill
+        searchQuery: ""
     };
 
     componentDidMount() {
         this.fetchItems();
-    }
+    };
 
     fetchItems = async () => {
         const res = await axios.get('http://localhost:5000/api/inventory');
@@ -94,6 +95,10 @@ class InventoryList extends React.Component {
         this.closeAddModal();
     };
 
+    handleSearchChange = (event) => {
+        this.setState({ searchQuery: event.target.value });
+    };
+
     // Report Generation Functions
     generateReport = async () => {
         const res = await axios.get('http://localhost:5000/api/inventory/report');
@@ -115,25 +120,21 @@ class InventoryList extends React.Component {
         doc.setFont("helvetica", "bold");
         doc.text("HomeStock", 105, 15, { align: "center" });
     
-        // Reset text color to black for the rest of the content
         doc.setTextColor(0, 0, 0);
     
         // Add "Purchase Report" below HomeStock
         doc.setFontSize(18);
         doc.text("Purchase Report", 105, 25, { align: "center" });
     
-        // Underline the title (full page width)
         doc.setLineWidth(0.7);
-        doc.line(10, 30, 200, 30); // Underline from left to right of the page
+        doc.line(10, 30, 200, 30); 
     
-        // Add current date with a clear gap below the underline
         const currentDate = new Date().toLocaleDateString();
         doc.setFontSize(12);
         doc.text(`Date: ${currentDate}`, 10, 40);
     
-        let y = 50; // Start content below the date
+        let y = 50; 
     
-        // Table Header
         doc.setFontSize(12);
         doc.setFont("helvetica", "bold");
         doc.text("Product Name", 10, y);
@@ -155,34 +156,29 @@ class InventoryList extends React.Component {
         doc.save("purchase_report.pdf");
     };
     
-
     downloadBillPDF = () => {
         const { bill } = this.state;
         const doc = new jsPDF();
         
-        // Set "HomeStock" with a light green color
         doc.setTextColor(34, 177, 76); // RGB for light green
         doc.setFontSize(22);
         doc.setFont("helvetica", "bold");
         doc.text("HomeStock", 105, 15, { align: "center" });
     
-        // Reset text color to black for the rest of the content
         doc.setTextColor(0, 0, 0);
     
-        // Add "Grocery Bill" below HomeStock
         doc.setFontSize(18);
         doc.text("Grocery Bill", 105, 25, { align: "center" });
     
-        // Underline the entire headline (full page width)
         doc.setLineWidth(0.7);
-        doc.line(10, 30, 200, 30); // Underline from left to right of the page
+        doc.line(10, 30, 200, 30); 
     
-        // Add current date with a clear gap below the underline
+        // Add current date
         const currentDate = new Date().toLocaleDateString();
         doc.setFontSize(12);
         doc.text(`Date: ${currentDate}`, 10, 40);
     
-        let y = 50; // Adjusted to provide a clearer gap
+        let y = 50; 
     
         // Column titles
         doc.setFontSize(12);
@@ -194,10 +190,8 @@ class InventoryList extends React.Component {
         
         y += 10;
     
-        // Reset font to normal
         doc.setFont("helvetica", "normal");
     
-        // Populate table rows
         bill.forEach((item) => {
             doc.text(item.productName, 10, y);
             doc.text(new Date(item.purchaseDate).toLocaleDateString(), 60, y);
@@ -210,11 +204,16 @@ class InventoryList extends React.Component {
         doc.save("grocery_bill.pdf");
     };
     
-    
-    
+    getFilteredItems = () => {
+        const { items, searchQuery } = this.state;
+        return items.filter(item =>
+            item.productName.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+    };
     
     render() {
-        const { items, showUpdateModal, selectedItem, showAddModal, newItem, report, bill } = this.state;
+        const { showUpdateModal, selectedItem, showAddModal, newItem, report, bill, searchQuery } = this.state;
+        const filteredItems = this.getFilteredItems();
 
         return (
             <div className="mt-4">
@@ -228,7 +227,13 @@ class InventoryList extends React.Component {
                 <button className="btn btn-success mb-3" onClick={this.generateBill}>
                     Generate Grocery Bill
                 </button>
-
+                <input
+                    type="text"
+                    className="form-control mb-3"
+                    placeholder="Search items..."
+                    value={searchQuery}
+                    onChange={this.handleSearchChange}
+                />
                 <table className="table table-striped">
                     <thead>
                         <tr>
@@ -240,28 +245,34 @@ class InventoryList extends React.Component {
                         </tr>
                     </thead>
                     <tbody>
-                        {items.map(item => (
-                            <tr key={item._id}>
-                                <td>{item.productName}</td>
-                                <td>{new Date(item.purchaseDate).toLocaleDateString()}</td>
-                                <td>{item.productCategory}</td>
-                                <td>{item.purchaseQuantity}</td>
-                                <td>
-                                    <button
-                                        className="btn btn-warning btn-sm mr-2"
-                                        onClick={() => this.openUpdateModal(item)}
-                                    >
-                                        Update
-                                    </button>
-                                    <button
-                                        className="btn btn-danger btn-sm"
-                                        onClick={() => this.deleteItem(item._id)}
-                                    >
-                                        Delete
-                                    </button>
-                                </td>
+                        {filteredItems.length === 0 ? (
+                            <tr>
+                                <td colSpan="5" className="text-center">No items found matching your search</td>
                             </tr>
-                        ))}
+                        ) : (
+                            filteredItems.map(item => (
+                                <tr key={item._id}>
+                                    <td>{item.productName}</td>
+                                    <td>{new Date(item.purchaseDate).toLocaleDateString()}</td>
+                                    <td>{item.productCategory}</td>
+                                    <td>{item.purchaseQuantity}</td>
+                                    <td>
+                                        <button
+                                            className="btn btn-warning btn-sm mr-2"
+                                            onClick={() => this.openUpdateModal(item)}
+                                        >
+                                            Update
+                                        </button>
+                                        <button
+                                            className="btn btn-danger btn-sm"
+                                            onClick={() => this.deleteItem(item._id)}
+                                        >
+                                            Delete
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))
+                        )}
                     </tbody>
                 </table>
 
@@ -359,7 +370,6 @@ class InventoryList extends React.Component {
                                                     value={newItem.restockQuantity}
                                                     onChange={this.handleAddChange}
                                                     className="form-control mb-2"
-                                                    unofficial
                                                     placeholder="Restock Quantity"
                                                 />
                                             </div>
@@ -485,7 +495,7 @@ class InventoryList extends React.Component {
                                 {bill.map((item, index) => (
                                     <tr key={index}>
                                         <td>{item.productName}</td>
-                                        <td>{item.purchaseDate}</td>
+                                        <td>{new Date(item.purchaseDate).toLocaleDateString()}</td>
                                         <td>{item.purchaseQuantity}</td>
                                         <td>{item.productCategory}</td>
                                     </tr>

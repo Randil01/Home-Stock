@@ -7,15 +7,18 @@ import UpdateRemind from "./component/reminds/updateRemind";
 import InventoryForm from './component/InventoryForm';
 import InventoryList from './component/InventoryList';
 import Report from './component/Report';
+import Home from './component/home/home';
 
 function App() {
   return (
     <div className="App">
       <Routes>
+          <Route path="/home" element={<Home/>} />
+
           <Route path="/" element={<DisplayRemind/>} />
           <Route path="/add" element={<AddRemind/>} />
           <Route path="/updateremind/:id" element={<UpdateRemind/>} /> 
-  
+          
           <Route path="/invform" element={<InventoryForm/>} />
           <Route path="/invlist" element={<InventoryList/>} /> 
           <Route path="/invreport" element={<Report/>} /> 

@@ -9,8 +9,6 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.8.4",
     "bootstrap": "^5.3.3",
-    "jspdf": "^2.5.1",
-    "jspdf-autotable": "^3.5.13",
     "jspdf": "^3.0.1",
     "jspdf-autotable": "^5.0.2",
     "node-cron": "^3.0.3",

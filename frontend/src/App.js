@@ -11,16 +11,19 @@ import BudgetReport from './component/budget/displayBudget';
 import InventoryForm from './component/InventoryForm';
 import InventoryList from './component/InventoryList';
 import Report from './component/Report';
+import Home from './component/home/home';
 
 
 function App() {
   return (
     <div className="App">
       <Routes>
+          <Route path="/home" element={<Home/>} />
+
           <Route path="/" element={<DisplayRemind/>} />
           <Route path="/add" element={<AddRemind/>} />
-          <Route path="/updateremind/:id" element={<UpdateRemind/>} />
-
+          <Route path="/updateremind/:id" element={<UpdateRemind/>} /> 
+   
           {/*New Route*/}
           <Route path="/addBudget" element={<AddBudget/>} />
           <Route path="/budgetDisplay" element={<BudgetReport/>} />

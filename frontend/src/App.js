@@ -24,46 +24,14 @@ function App() {
         <Route path="/signup" element={<Signup />} />
 
         <Route path="/" element={<ProtectedRoute><Home/></ProtectedRoute>} />
-        <Route path="/remind" element={
-          <ProtectedRoute>
-            <DisplayRemind />
-          </ProtectedRoute>
-        } />
-        <Route path="/add" element={
-          <ProtectedRoute>
-            <AddRemind />
-          </ProtectedRoute>
-        } />
-        <Route path="/updateremind/:id" element={
-          <ProtectedRoute>
-            <UpdateRemind />
-          </ProtectedRoute>
-        } />
-        <Route path="/addBudget" element={
-          <ProtectedRoute>
-            <AddBudget />
-          </ProtectedRoute>
-        } />
-        <Route path="/budgetDisplay" element={
-          <ProtectedRoute>
-            <BudgetReport />
-          </ProtectedRoute>
-        } />
-        <Route path="/invform" element={
-          <ProtectedRoute>
-            <InventoryForm />
-          </ProtectedRoute>
-        } />
-        <Route path="/invlist" element={
-          <ProtectedRoute>
-            <InventoryList />
-          </ProtectedRoute>
-        } />
-        <Route path="/invreport" element={
-          <ProtectedRoute>
-            <Report />
-          </ProtectedRoute>
-        } />
+        <Route path="/remind" element={<ProtectedRoute> <DisplayRemind /> </ProtectedRoute> } />
+        <Route path="/add" element={ <ProtectedRoute><AddRemind /></ProtectedRoute> } />
+        <Route path="/updateremind/:id" element={ <ProtectedRoute> <UpdateRemind /> </ProtectedRoute> } />
+        <Route path="/addBudget" element={ <ProtectedRoute> <AddBudget /> </ProtectedRoute> } />
+        <Route path="/budgetDisplay" element={ <ProtectedRoute>  <BudgetReport />  </ProtectedRoute>} />
+        <Route path="/invform" element={ <ProtectedRoute>  <InventoryForm /> </ProtectedRoute> } />
+        <Route path="/invlist" element={ <ProtectedRoute>  <InventoryList />   </ProtectedRoute> } />
+        <Route path="/invreport" element={<ProtectedRoute>  <Report /> </ProtectedRoute>} />
       </Routes>
     </div>
   );

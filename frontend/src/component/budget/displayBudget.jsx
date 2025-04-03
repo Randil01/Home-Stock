@@ -114,11 +114,10 @@ function BudgetReport() {
   return (
     <div>
       <Navbar/>
-    <Container className="py-5">
     <Container className="mt-4">
       <div className="d-flex justify-content-end mb-4">
         <Link to="/addBudget">
-          <Button variant="secondary">
+          <Button variant="secondary btn-success ">
             <span className="me-2">+</span>Add Budget
           </Button>
         </Link>

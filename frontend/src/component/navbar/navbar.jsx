@@ -15,7 +15,7 @@ function Navbar() {
   return (
     <nav className="navbar navbar-expand-lg navbar-custom">
       <div className="container-fluid">
-        <Link className="navbar-brand" to="/home">Home Stock</Link>
+        <Link className="navbar-brand" to="/">Home Stock</Link>
         <button
           className="navbar-toggler"
           type="button"

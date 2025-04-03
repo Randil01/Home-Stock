@@ -77,44 +77,7 @@ function RemindersAll() {
     const interval = setInterval(deleteOldReminders, 86400000);
     return () => clearInterval(interval);
   }, [reminders]);
-
-  const generatePDF = () => {
-    const doc = new jsPDF();
-    
-    // Add title
-    doc.setFontSize(16);
-    doc.text('Reminders Report', 14, 15);
-    
-    // Add date
-    doc.setFontSize(10);
-    doc.text(`Generated on: ${new Date().toLocaleDateString()}`, 14, 25);
-    
-    // Create table data
-    const tableData = reminders.map(reminder => [
-      reminder._id,
-      reminder.descrption,
-      new Date(reminder.dateAdded).toLocaleDateString()
-    ]);
-    
-    // Generate table
-    doc.autoTable({
-      startY: 30,
-      head: [['ID', 'Description', 'Date Added']],
-      body: tableData,
-      theme: 'grid',
-      headStyles: { fillColor: [41, 128, 185] },
-      styles: { fontSize: 8 },
-      columnStyles: {
-        0: { cellWidth: 30 },
-        1: { cellWidth: 100 },
-        2: { cellWidth: 40 }
-      }
-    });
-    
-    // Save the PDF
-    doc.save('reminders-report.pdf');
-  };
-
+  
   return (
     <div>
       <Nav />

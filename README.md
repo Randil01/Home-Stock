@@ -4,6 +4,7 @@ A system to manage grocery items, track their stock levels, and send notificatio
 
 ## Table of Contents
 - [Installation](#installation)
+- [Used tools](#Tool usage)
 - [Usage](#usage)
 - [Contributing](#contributing)
 - [Contact](#contact)
@@ -14,6 +15,15 @@ A system to manage grocery items, track their stock levels, and send notificatio
 1. Clone the repository:
    use gitbash
    git clone 'copy URL'
+
+2. Install all the dependencis for backend and frontend
+   use 'npm install' command in terminal
+
+3. Run the backend and frontend 
+   Use 'npm start' command in terminal
+
+## Used tools and thecnologies
+
 
 ## Usage
 view grocery items and their stock status
@@ -29,6 +39,9 @@ We welcome contributions! To contribute:
 ## Contact
 feel free to reach out our developers: 
 thenularandila2002@gmail.com
+duvinidulwanya@gmail.com
+vishwaudantha@gmail.com
+rusithsupulsara@gmail.com
 
 ## Acknowledgements
 Thanks to the MailJet API for email functionality

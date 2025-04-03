@@ -6,7 +6,6 @@ import UpdateRemind from './component/reminds/updateRemind';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import ProtectedRoute from './component/ProtectedRoute';
-
 // Import Budget
 import AddBudget from './component/budget/addBudget';
 import BudgetReport from './component/budget/displayBudget';

@@ -15,7 +15,7 @@ function Navbar() {
   return (
     <nav className="navbar navbar-expand-lg navbar-custom">
       <div className="container-fluid">
-        <Link className="navbar-brand" to="/">Home Stock</Link>
+        <Link className="navbar-brand" to="/home">Home Stock</Link>
         <button
           className="navbar-toggler"
           type="button"
@@ -38,7 +38,7 @@ function Navbar() {
                   <Link className="nav-link" to="">Assets</Link>
                 </li>
                 <li className="nav-item mx-3">
-                  <Link className="nav-link" to="/">Reminders</Link>
+                  <Link className="nav-link" to="/remind">Reminders</Link>
                 </li>
                 <li className="nav-item mx-3">
                   <Link className="nav-link" to="/budgetDisplay">Budgeting</Link>

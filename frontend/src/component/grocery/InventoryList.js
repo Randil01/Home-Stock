@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { jsPDF } from 'jspdf';
 import React from 'react';
+import Navbar from '../navbar/navbar';
 
 class InventoryList extends React.Component {
     state = {
@@ -216,6 +217,8 @@ class InventoryList extends React.Component {
         const filteredItems = this.getFilteredItems();
 
         return (
+            <div>
+                <Navbar/>
             <div className="mt-4">
                 <h2>Inventory List</h2>
                 <button className="btn btn-primary mb-3 mr-2" onClick={this.openAddModal}>
@@ -504,6 +507,7 @@ class InventoryList extends React.Component {
                         </table>
                     </div>
                 )}
+            </div>
             </div>
         );
     }

@@ -5,15 +5,15 @@ import DisplayRemind from './component/reminds/displayReminds';
 import UpdateRemind from './component/reminds/updateRemind';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
-import ProtectedRoute from './components/ProtectedRoute';
+import ProtectedRoute from './component/ProtectedRoute';
 
 // Import Budget
 import AddBudget from './component/budget/addBudget';
 import BudgetReport from './component/budget/displayBudget';
 // Inventory 
-import InventoryForm from './component/InventoryForm';
-import InventoryList from './component/InventoryList';
-import Report from './component/Report';
+import InventoryForm from './component/grocery/InventoryForm';
+import InventoryList from './component/grocery/InventoryList';
+import Report from './component/grocery/Report';
 import Home from './component/home/home';
 
 function App() {
@@ -24,8 +24,8 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
 
-        {/* Protected routes */}
-        <Route path="/" element={
+        <Route path="/" element={<ProtectedRoute><Home/></ProtectedRoute>} />
+        <Route path="/remind" element={
           <ProtectedRoute>
             <DisplayRemind />
           </ProtectedRoute>
@@ -65,7 +65,6 @@ function App() {
             <Report />
           </ProtectedRoute>
         } />
-          <Route path="/home" element={<Home/>} />
       </Routes>
     </div>
   );

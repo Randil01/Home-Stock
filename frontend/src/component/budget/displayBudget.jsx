@@ -3,6 +3,7 @@ import axios from "axios";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import { Table, Button, Container, Form, Card, Row, Col } from 'react-bootstrap';
+import Navbar from "../navbar/navbar";
 
 function BudgetReport() {
   const [budgets, setBudgets] = useState([]);
@@ -110,6 +111,8 @@ function BudgetReport() {
   };
 
   return (
+    <div>
+      <Navbar/>
     <Container className="py-5">
       <Card className="shadow">
         <Card.Header className="bg-primary text-white">
@@ -234,6 +237,7 @@ function BudgetReport() {
         </Card.Body>
       </Card>
     </Container>
+    </div>
   );
 }
 

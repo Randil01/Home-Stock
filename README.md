@@ -4,7 +4,7 @@ A system to manage grocery items, track their stock levels, and send notificatio
 
 ## Table of Contents
 - [Installation](#installation)
-- [Used tools](#Tool usage)
+- [Usedtools](#Tool usage)
 - [Usage](#usage)
 - [Contributing](#contributing)
 - [Contact](#contact)

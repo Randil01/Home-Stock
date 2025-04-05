@@ -35,7 +35,7 @@ function Navbar() {
                   <Link className="nav-link" to="/invlist">Groceries</Link>
                 </li>
                 <li className="nav-item mx-3">
-                  <Link className="nav-link" to="">Assets</Link>
+                  <Link className="nav-link" to="/assetform">Assets</Link>
                 </li>
                 <li className="nav-item mx-3">
                   <Link className="nav-link" to="/remind">Reminders</Link>

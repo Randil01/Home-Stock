@@ -4,7 +4,8 @@ import { Table, Form, Button, Card, Collapse, Row, Col } from "react-bootstrap";
 import AssetChart from "./AssetChart";
 import { jsPDF } from "jspdf";
 import autoTable from "jspdf-autotable";
-
+import Navbar from "../navbar/navbar"
+;
 const AssetManager = () => {
   const [assets, setAssets] = useState([]);
   const [showForm, setShowForm] = useState(false);
@@ -57,6 +58,8 @@ const AssetManager = () => {
   );
 
   return (
+    <div>
+      <Navbar/>
     <div className="container py-4">
       <h2 className="mb-4 text-center fw-bold">🏠 Asset Management</h2>
 
@@ -109,6 +112,7 @@ const AssetManager = () => {
           <AssetChart assets={filteredAssets} />
         </Card.Body>
       </Card>
+    </div>
     </div>
   );
 };

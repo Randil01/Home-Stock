@@ -15,9 +15,9 @@ import InventoryList from './component/grocery/InventoryList';
 import Report from './component/grocery/Report';
 import Home from './component/home/home';
 //Asset
-import AssetChart from './component/AssetChart';
-import AssetForm from './component/AssetForm';
-import AssetList from './component/AssetList';
+import AssetChart from './component/assets/AssetChart';
+import AssetForm from './component/assets/AssetForm';
+import AssetList from './component/assets/AssetList';
 
 
 function App() {

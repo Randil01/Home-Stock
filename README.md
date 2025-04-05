@@ -1,16 +1,20 @@
-# Home Stock Management System
+# 🏠 Home Stock Management System
 
-A system to manage grocery items, track their stock levels, and send notifications when items are about to run out or need restocking.
+A smart solution to manage grocery items, track stock levels, and receive notifications when items are low or need restocking.
 
-## Table of Contents
+---
+
+## 📑 Table of Contents
 - [Installation](#installation)
-- [Usedtools](#Tool usage)
+- [Tools & Technologies](#tools--technologies)
 - [Usage](#usage)
 - [Contributing](#contributing)
 - [Contact](#contact)
 - [Acknowledgements](#acknowledgements)
 
-## Installation
+---
+
+## 🛠 Installation
 
 1. Clone the repository:
    use gitbash
@@ -22,27 +26,32 @@ A system to manage grocery items, track their stock levels, and send notificatio
 3. Run the backend and frontend 
    Use 'npm start' command in terminal
 
-## Used tools and thecnologies
+## 🧰 Used tools and thecnologies
 
+- Frontend: React, Bosstrap CSS, Framer Motion, Lucide Icons
+- Backend: Node.js, Express.js, MongoDB, Mongoose
+- Email Service: MailJet API
+- Version Control: Git & GitHub
 
-## Usage
-view grocery items and their stock status
-Receive email notifications when items need restocking
+## 🚀 Usage
+- View and manage grocery items with real-time stock status
+- Receive automated email alerts when items are running low
+- Plan ahead with smart notifications for restocking
 
-## Contributing
-We welcome contributions! To contribute:
-1.Fork the repository.
-2.Create a feature branch.
-3.Write tests for your changes.
-4.Submit a pull request.
+## 🤝 Contributing
+We welcome contributions from the community!
+1. Fork the repository.
+2. Create a feature branch.
+3. Write tests for your changes.
+4. Submit a pull request.
 
-## Contact
-feel free to reach out our developers: 
-thenularandila2002@gmail.com
-duvinidulwanya@gmail.com
-vishwaudantha@gmail.com
-rusithsupulsara@gmail.com
+## 📩 Contact
+Feel free to reach out to our developers:
+- thenularandila2002@gmail.com  
+- duvinidulwanya@gmail.com  
+- vishwaudantha@gmail.com  
+- rusithsupulsara@gmail.com
 
 ## Acknowledgements
-Thanks to the MailJet API for email functionality
-Special thanks to all contributors who helped make this project a success
+- Thanks to the MailJet API for email functionality
+- Special thanks to all contributors who helped make this project a success

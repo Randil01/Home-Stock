@@ -14,12 +14,17 @@ import InventoryForm from './component/grocery/InventoryForm';
 import InventoryList from './component/grocery/InventoryList';
 import Report from './component/grocery/Report';
 import Home from './component/home/home';
+//Asset
+import AssetChart from './component/AssetChart';
+import AssetForm from './component/AssetForm';
+import AssetList from './component/AssetList';
+
 
 function App() {
   return (
     <div className="App">
       <Routes>
-        {/* Public routes */}
+          {/* Public routes */}
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
 
@@ -32,6 +37,10 @@ function App() {
         <Route path="/invform" element={ <ProtectedRoute>  <InventoryForm /> </ProtectedRoute> } />
         <Route path="/invlist" element={ <ProtectedRoute>  <InventoryList />   </ProtectedRoute> } />
         <Route path="/invreport" element={<ProtectedRoute>  <Report /> </ProtectedRoute>} />
+                      
+        <Route path="/assetChart" element={<AssetChart />} />
+        <Route path="/assetForm" element={<AssetForm />} />
+        <Route path="/assetList" element={<AssetList />} />                       
       </Routes>
     </div>
   );

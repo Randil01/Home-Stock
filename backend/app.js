@@ -34,7 +34,8 @@ const budget = require("./routes/budgetRoutes");
 const number = require("./routes/emailRoutes");
 const inventoryRoutes = require("./routes/inventoryRoutes");
 const authRoutes = require("./routes/authRoutes");
-const check = require('./routes/restockroute')
+const check = require('./routes/restockroute');
+const assets = require('./routes/assetroutes');
 
 app.use("/notification", reminds);
 app.use("/email", number);
@@ -42,8 +43,10 @@ app.use('/api/inventory', inventoryRoutes);
 app.use('/checkRestock',check);
 app.use("/budget", budget);
 app.use("/api/auth", authRoutes);
+app.use("/api/assets",assets);
 
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({ message: 'Something went wrong!', error: err.message });
 });
+

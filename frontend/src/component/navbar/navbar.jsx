@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';  // Import Link from react-router-dom
 import '../navbar/navbar.css'; // Import the CSS file for custom styling
 
 function Navbar() {
@@ -22,8 +23,13 @@ function Navbar() {
             <li className="nav-item">
               <a className="nav-link" href="#">Grocery Inventory</a>
             </li>
+<<<<<<< Updated upstream
             <li className="nav-item">
               <a className="nav-link" href="#">Assets</a>
+=======
+            <li className="nav-item mx-3">
+              <Link className="nav-link" to="/assetForm">Assets</Link>  {/* Link to Assets page */}
+>>>>>>> Stashed changes
             </li>
             <li className="nav-item">
               <a className="nav-link" href="#">Reminders</a>

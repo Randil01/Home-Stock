@@ -3,7 +3,7 @@ const schema = mongoose.Schema;
 
 const numberSchema = new schema({
     
-    number:{
+    email:{
         type : String,
         required : true,
         unique : true,
@@ -11,5 +11,5 @@ const numberSchema = new schema({
     
 });
 
-const number = mongoose.model("phoneModel",numberSchema);
+const number = mongoose.model("emailModel",numberSchema);
 module.exports = number;

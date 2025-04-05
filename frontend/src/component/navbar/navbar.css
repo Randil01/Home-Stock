@@ -1,11 +1,8 @@
-/* navbar.css */
 
-/* Change navbar background color */
 .navbar-custom {
-    background-color: #4c5053; /* Dark background color */
+    background-color: #4c5053; 
   }
   
-  /* Make the text color of nav items white */
   .nav-link {
     font-weight: normal !important;  /* Reset bold */
     color: white !important; /* Set the text color to white */
@@ -14,14 +11,14 @@
   
   /* Optional: Adjust navbar link color on hover */
   .nav-link:hover {
-    color: #6e8594 !important; /* Blue color when hovering over the nav items */
+    color: #202121 !important; 
   }
-  
+
   /* Optional: Customize navbar brand font */
   .navbar-brand {
-    font-size: 30px; /* You can adjust this size */
-    font-family: 'Cursive', sans-serif; /* Or any other font you prefer */
-    color: rgb(255, 255, 255); /* Set the brand text color to white */
+    font-size: 30px; 
+    font-family: 'Cursive', sans-serif; 
+    color: rgb(253, 255, 254);
   }
   
   /* Optional: Tweak the navbar responsiveness */

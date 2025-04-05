@@ -233,7 +233,7 @@ class InventoryList extends React.Component {
                 <input
                     type="text"
                     className="form-control mb-3"
-                    placeholder="Search items..."
+                    placeholder="Search items by name..."
                     value={searchQuery}
                     onChange={this.handleSearchChange}
                 />

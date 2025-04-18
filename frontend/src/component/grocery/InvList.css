@@ -1,0 +1,36 @@
+/* Only custom styles that Bootstrap doesn't provide */
+.mainInvLayout {
+    margin-left: 50px;
+}
+
+/* Custom modal backdrop styling */
+.modal.show {
+    background-color: rgba(0,0,0,0.5);
+}
+
+/* Custom table styling if needed */
+.table-custom {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Custom error message styling */
+.invalid-feedback {
+    display: block;
+    color: #dc3545;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+}
+
+/* Custom button hover effects */
+.btn-custom:hover {
+    transform: translateY(-1px);
+    transition: transform 0.2s ease;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .mainInvLayout {
+        margin-left: 0;
+        padding: 15px;
+    }
+}

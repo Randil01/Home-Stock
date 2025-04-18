@@ -39,26 +39,22 @@ class InventoryList extends React.Component {
         this.fetchItems();
     };
 
-    // Validation Logic
     validateForm = (item, isUpdate = false) => {
         const errors = {};
         const today = new Date().toISOString().split('T')[0];
 
-        // Product Name: Required, 1-100 chars, alphanumeric with spaces/punctuation
         if (!item.productName || item.productName.trim() === '') {
             errors.productName = 'Product name is required';
         } else if (!/^[a-zA-Z0-9\s,.-]{1,100}$/.test(item.productName)) {
             errors.productName = 'Product name must be 1-100 characters (letters, numbers, spaces, commas, periods, hyphens)';
         }
 
-        // Purchase Date: Required, valid date, not in future
         if (!item.purchaseDate) {
             errors.purchaseDate = 'Purchase date is required';
         } else if (item.purchaseDate > today) {
             errors.purchaseDate = 'Purchase date cannot be in the future';
         }
 
-        // Product Category: Required, must be valid option
         const validCategories = [
             'Fresh product', 'Dairy and eggs', 'Meat and seafood',
             'Dry goods staples', 'Household and personal care', 'Other'
@@ -69,24 +65,20 @@ class InventoryList extends React.Component {
             errors.productCategory = 'Please select a valid category';
         }
 
-        // Purchase Quantity: Required, positive integer
         if (!item.purchaseQuantity) {
             errors.purchaseQuantity = 'Purchase quantity is required';
         } else if (!/^[1-9]\d*$/.test(item.purchaseQuantity)) {
             errors.purchaseQuantity = 'Purchase quantity must be a positive integer';
         }
 
-        // Preferred Barcode: Optional, exactly 20 digits if provided
         if (item.preferredBarcode && !/^\d{20}$/.test(item.preferredBarcode)) {
             errors.preferredBarcode = 'Barcode must be exactly 20 digits';
         }
 
-        // Restock Date: Optional, valid date, not before purchase date
         if (item.restockDate && item.restockDate < item.purchaseDate) {
             errors.restockDate = 'Restock date cannot be before purchase date';
         }
 
-        // Restock Quantity: Optional, non-negative integer
         if (item.restockQuantity && !/^\d+$/.test(item.restockQuantity)) {
             errors.restockQuantity = 'Restock quantity must be a non-negative integer';
         }
@@ -94,7 +86,6 @@ class InventoryList extends React.Component {
         return errors;
     };
 
-    // Update Modal Functions
     openUpdateModal = (item) => {
         this.setState({ showUpdateModal: true, selectedItem: item, errors: {} });
     };
@@ -120,11 +111,10 @@ class InventoryList extends React.Component {
         const { name, value } = e.target;
         this.setState(prevState => ({
             selectedItem: { ...prevState.selectedItem, [name]: value },
-            errors: { ...prevState.errors, [name]: '' } // Clear error on change
+            errors: { ...prevState.errors, [name]: '' }
         }));
     };
 
-    // Add Modal Functions
     openAddModal = () => {
         this.setState({ showAddModal: true, errors: {} });
     };
@@ -149,7 +139,7 @@ class InventoryList extends React.Component {
         const { name, value } = e.target;
         this.setState(prevState => ({
             newItem: { ...prevState.newItem, [name]: value },
-            errors: { ...prevState.errors, [name]: '' } // Clear error on change
+            errors: { ...prevState.errors, [name]: '' }
         }));
     };
 
@@ -170,7 +160,6 @@ class InventoryList extends React.Component {
         this.setState({ searchQuery: event.target.value });
     };
 
-    // Report Generation Functions
     generateReport = async () => {
         const res = await axios.get('http://localhost:5000/api/inventory/report');
         this.setState({ report: res.data, bill: [] });
@@ -276,80 +265,88 @@ class InventoryList extends React.Component {
         return (
             <div>
                 <Navbar />
-                <div className="mt-4 mainInvLayout">
-                    <h2>Inventory List</h2>
-                    <button className="mb-3 mr-2 btn btn-primary" onClick={this.openAddModal}>
-                        Add Item
-                    </button>
-                    <button className="mb-3 mr-10 btn btn-info" onClick={this.generateReport}>
-                        Generate Purchase Report
-                    </button>
-                    <button className="mb-3 btn btn-success" onClick={this.generateBill}>
-                        Generate Grocery Bill
-                    </button>
-                    <input
-                        type="text"
-                        className="mb-3 form-control"
-                        placeholder="Search items by name..."
-                        value={searchQuery}
-                        onChange={this.handleSearchChange}
-                    />
-                    <table className="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Purchase Date</th>
-                                <th>Category</th>
-                                <th>Quantity</th>
-                                <th>Barcode</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {filteredItems.length === 0 ? (
+                <div className="container mt-4 mainInvLayout">
+                    <h2 className="mb-4 fw-bold fs-1">Inventory List</h2>
+                    <div className="d-flex mb-3 gap-2">
+                        <button className="btn btn-primary" onClick={this.openAddModal}>
+                        + Add Item
+                        </button>
+                        <button className="btn btn-success" onClick={this.generateReport}>
+                            Purchase Report
+                        </button>
+                        <button className="btn btn-success" onClick={this.generateBill}>
+                            Grocery Bill Report
+                        </button>
+                    </div>
+                    <div className="mb-3">
+                        <input
+                            type="text"
+                            className="form-control"
+                            placeholder="Search items by name..."
+                            value={searchQuery}
+                            onChange={this.handleSearchChange}
+                        />
+                    </div>
+                    <div className="table-responsive">
+                        <table className="table table-striped table-hover">
+                            <thead className="table-light">
                                 <tr>
-                                    <td colSpan="6" className="text-center">No items found matching your search</td>
+                                    <th>Name</th>
+                                    <th>Purchase Date</th>
+                                    <th>Category</th>
+                                    <th>Quantity</th>
+                                    <th>Barcode</th>
+                                    <th>Actions</th>
                                 </tr>
-                            ) : (
-                                filteredItems.map(item => (
-                                    <tr key={item._id}>
-                                        <td>{item.productName}</td>
-                                        <td>{new Date(item.purchaseDate).toLocaleDateString()}</td>
-                                        <td>{item.productCategory}</td>
-                                        <td>{item.purchaseQuantity}</td>
-                                        <td>{item.preferredBarcode}</td>
-                                        <td>
-                                            <button
-                                                className="mr-10 btn btn-warning btn-sm"
-                                                onClick={() => this.openUpdateModal(item)}
-                                            >
-                                                Update
-                                            </button>
-                                            <button
-                                                className="btn btn-danger btn-sm"
-                                                onClick={() => this.deleteItem(item._id)}
-                                            >
-                                                Delete
-                                            </button>
-                                        </td>
+                            </thead>
+                            <tbody>
+                                {filteredItems.length === 0 ? (
+                                    <tr>
+                                        <td colSpan="6" className="text-center">No items found matching your search</td>
                                     </tr>
-                                ))
-                            )}
-                        </tbody>
-                    </table>
+                                ) : (
+                                    filteredItems.map(item => (
+                                        <tr key={item._id}>
+                                            <td>{item.productName}</td>
+                                            <td>{new Date(item.purchaseDate).toLocaleDateString()}</td>
+                                            <td>{item.productCategory}</td>
+                                            <td>{item.purchaseQuantity}</td>
+                                            <td>{item.preferredBarcode}</td>
+                                            <td>
+                                                <div className="d-flex gap-2">
+                                                    <button
+                                                        className="btn btn-warning btn-sm"
+                                                        onClick={() => this.openUpdateModal(item)}
+                                                    >
+                                                        Update
+                                                    </button>
+                                                    <button
+                                                        className="btn btn-danger btn-sm"
+                                                        onClick={() => this.deleteItem(item._id)}
+                                                    >
+                                                        Delete
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    ))
+                                )}
+                            </tbody>
+                        </table>
+                    </div>
 
                     {/* Add Item Modal */}
                     {showAddModal && (
-                        <div className="modal" style={{ display: 'block', backgroundColor: 'rgba(0,0,0,0.5)' }}>
-                            <div className="modal-dialog">
+                        <div className="modal show d-block" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
+                            <div className="modal-dialog modal-lg">
                                 <div className="modal-content">
                                     <div className="modal-header">
                                         <h5 className="modal-title">Add Inventory Item</h5>
-                                        <button className="close" onClick={this.closeAddModal}>×</button>
+                                        <button type="button" className="btn-close" onClick={this.closeAddModal}></button>
                                     </div>
                                     <form onSubmit={this.handleAddSubmit}>
                                         <div className="modal-body">
-                                            <div className="row">
+                                            <div className="row g-3">
                                                 <div className="col-md-6">
                                                     <label htmlFor="productName" className="form-label">Product Name</label>
                                                     <input
@@ -358,11 +355,10 @@ class InventoryList extends React.Component {
                                                         name="productName"
                                                         value={newItem.productName}
                                                         onChange={this.handleAddChange}
-                                                        className="mb-2 form-control"
-                                                        placeholder="Enter product name (e.g., Apples)"
-                                                        required
+                                                        className={`form-control ${errors.productName ? 'is-invalid' : ''}`}
+                                                        placeholder="Enter product name"
                                                     />
-                                                    {errors.productName && <div className="error-message">{errors.productName}</div>}
+                                                    {errors.productName && <div className="invalid-feedback">{errors.productName}</div>}
                                                 </div>
                                                 <div className="col-md-6">
                                                     <label htmlFor="purchaseDate" className="form-label">Purchase Date</label>
@@ -372,14 +368,10 @@ class InventoryList extends React.Component {
                                                         name="purchaseDate"
                                                         value={newItem.purchaseDate}
                                                         onChange={this.handleAddChange}
-                                                        className="mb-2 form-control"
-                                                        placeholder="Select purchase date"
-                                                        required
+                                                        className={`form-control ${errors.purchaseDate ? 'is-invalid' : ''}`}
                                                     />
-                                                    {errors.purchaseDate && <div className="error-message">{errors.purchaseDate}</div>}
+                                                    {errors.purchaseDate && <div className="invalid-feedback">{errors.purchaseDate}</div>}
                                                 </div>
-                                            </div>
-                                            <div className="row">
                                                 <div className="col-md-6">
                                                     <label htmlFor="productCategory" className="form-label">Product Category</label>
                                                     <select
@@ -387,8 +379,7 @@ class InventoryList extends React.Component {
                                                         name="productCategory"
                                                         value={newItem.productCategory}
                                                         onChange={this.handleAddChange}
-                                                        className="mb-2 form-control"
-                                                        required
+                                                        className={`form-select ${errors.productCategory ? 'is-invalid' : ''}`}
                                                     >
                                                         <option value="">Select Category</option>
                                                         <option value="Fresh product">Fresh product</option>
@@ -398,24 +389,21 @@ class InventoryList extends React.Component {
                                                         <option value="Household and personal care">Household and personal care</option>
                                                         <option value="Other">Other</option>
                                                     </select>
-                                                    {errors.productCategory && <div className="error-message">{errors.productCategory}</div>}
+                                                    {errors.productCategory && <div className="invalid-feedback">{errors.productCategory}</div>}
                                                 </div>
                                                 <div className="col-md-6">
                                                     <label htmlFor="purchaseQuantity" className="form-label">Purchase Quantity</label>
                                                     <input
                                                         type="number"
-                                                        id="purchase頓Quantity"
+                                                        id="purchaseQuantity"
                                                         name="purchaseQuantity"
                                                         value={newItem.purchaseQuantity}
                                                         onChange={this.handleAddChange}
-                                                        className="mb-2 form-control"
-                                                        placeholder="Enter quantity (e.g., 5)"
-                                                        required
+                                                        className={`form-control ${errors.purchaseQuantity ? 'is-invalid' : ''}`}
+                                                        placeholder="Enter quantity"
                                                     />
-                                                    {errors.purchaseQuantity && <div className="error-message">{errors.purchaseQuantity}</div>}
+                                                    {errors.purchaseQuantity && <div className="invalid-feedback">{errors.purchaseQuantity}</div>}
                                                 </div>
-                                            </div>
-                                            <div className="row">
                                                 <div className="col-md-6">
                                                     <label htmlFor="preferredBarcode" className="form-label">Preferred Barcode</label>
                                                     <input
@@ -424,10 +412,10 @@ class InventoryList extends React.Component {
                                                         name="preferredBarcode"
                                                         value={newItem.preferredBarcode}
                                                         onChange={this.handleAddChange}
-                                                        className="mb-2 form-control"
+                                                        className={`form-control ${errors.preferredBarcode ? 'is-invalid' : ''}`}
                                                         placeholder="Enter 20-digit barcode"
                                                     />
-                                                    {errors.preferredBarcode && <div className="error-message">{errors.preferredBarcode}</div>}
+                                                    {errors.preferredBarcode && <div className="invalid-feedback">{errors.preferredBarcode}</div>}
                                                 </div>
                                                 <div className="col-md-6">
                                                     <label htmlFor="restockDate" className="form-label">Restock Date</label>
@@ -437,13 +425,10 @@ class InventoryList extends React.Component {
                                                         name="restockDate"
                                                         value={newItem.restockDate}
                                                         onChange={this.handleAddChange}
-                                                        className="mb-2 form-control"
-                                                        placeholder="Select restock date (optional)"
+                                                        className={`form-control ${errors.restockDate ? 'is-invalid' : ''}`}
                                                     />
-                                                    {errors.restockDate && <div className="error-message">{errors.restockDate}</div>}
+                                                    {errors.restockDate && <div className="invalid-feedback">{errors.restockDate}</div>}
                                                 </div>
-                                            </div>
-                                            <div className="row">
                                                 <div className="col-md-6">
                                                     <label htmlFor="restockQuantity" className="form-label">Restock Quantity</label>
                                                     <input
@@ -452,18 +437,18 @@ class InventoryList extends React.Component {
                                                         name="restockQuantity"
                                                         value={newItem.restockQuantity}
                                                         onChange={this.handleAddChange}
-                                                        className="mb-2 form-control"
-                                                        placeholder="Enter restock quantity (optional)"
+                                                        className={`form-control ${errors.restockQuantity ? 'is-invalid' : ''}`}
+                                                        placeholder="Enter restock quantity"
                                                     />
-                                                    {errors.restockQuantity && <div className="error-message">{errors.restockQuantity}</div>}
+                                                    {errors.restockQuantity && <div className="invalid-feedback">{errors.restockQuantity}</div>}
                                                 </div>
                                             </div>
                                         </div>
                                         <div className="modal-footer">
-                                            <button type="submit" className="btn btn-primary">Add Item</button>
                                             <button type="button" className="btn btn-secondary" onClick={this.closeAddModal}>
                                                 Cancel
                                             </button>
+                                            <button type="submit" className="btn btn-primary">Add Item</button>
                                         </div>
                                     </form>
                                 </div>
@@ -473,103 +458,113 @@ class InventoryList extends React.Component {
 
                     {/* Update Item Modal */}
                     {showUpdateModal && selectedItem && (
-                        <div className="modal" style={{ display: 'block', backgroundColor: 'rgba(0,0,0,0.5)' }}>
-                            <div className="modal-dialog">
+                        <div className="modal show d-block" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
+                            <div className="modal-dialog modal-lg">
                                 <div className="modal-content">
                                     <div className="modal-header">
                                         <h5 className="modal-title">Update Item</h5>
-                                        <button className="close" onClick={this.closeUpdateModal}>×</button>
+                                        <button type="button" className="btn-close" onClick={this.closeUpdateModal}></button>
                                     </div>
                                     <form onSubmit={this.updateItem}>
                                         <div className="modal-body">
-                                            <label htmlFor="updateProductName" className="form-label">Product Name</label>
-                                            <input
-                                                type="text"
-                                                id="updateProductName"
-                                                name="productName"
-                                                value={selectedItem.productName}
-                                                onChange={this.handleUpdateChange}
-                                                className="mb-2 form-control"
-                                                placeholder="Enter product name (e.g., Apples)"
-                                            />
-                                            {errors.productName && <div className="error-message">{errors.productName}</div>}
-                                            <label htmlFor="updatePurchaseDate" className="form-label">Purchase Date</label>
-                                            <input
-                                                type="date"
-                                                id="updatePurchaseDate"
-                                                name="purchaseDate"
-                                                value={selectedItem.purchaseDate.split('T')[0]}
-                                                onChange={this.handleUpdateChange}
-                                                className="mb-2 form-control"
-                                                placeholder="Select purchase date"
-                                            />
-                                            {errors.purchaseDate && <div className="error-message">{errors.purchaseDate}</div>}
-                                            <label htmlFor="updateProductCategory" className="form-label">Product Category</label>
-                                            <select
-                                                id="updateProductCategory"
-                                                name="productCategory"
-                                                value={selectedItem.productCategory}
-                                                onChange={this.handleUpdateChange}
-                                                className="mb-2 form-control"
-                                            >
-                                                <option value="Fresh product">Fresh product</option>
-                                                <option value="Dairy and eggs">Dairy and eggs</option>
-                                                <option value="Meat and seafood">Meat and seafood</option>
-                                                <option value="Dry goods staples">Dry goods staples</option>
-                                                <option value="Household and personal care">Household and personal care</option>
-                                                <option value="Other">Other</option>
-                                            </select>
-                                            {errors.productCategory && <div className="error-message">{errors.productCategory}</div>}
-                                            <label htmlFor="updatePurchaseQuantity" className="form-label">Purchase Quantity</label>
-                                            <input
-                                                type="number"
-                                                id="updatePurchaseQuantity"
-                                                name="purchaseQuantity"
-                                                value={selectedItem.purchaseQuantity}
-                                                onChange={this.handleUpdateChange}
-                                                className="mb-2 form-control"
-                                                placeholder="Enter quantity (e.g., 5)"
-                                            />
-                                            {errors.purchaseQuantity && <div className="error-message">{errors.purchaseQuantity}</div>}
-                                            <label htmlFor="updatePreferredBarcode" className="form-label">Preferred Barcode</label>
-                                            <input
-                                                type="text"
-                                                id="updatePreferredBarcode"
-                                                name="preferredBarcode"
-                                                value={selectedItem.preferredBarcode || ''}
-                                                onChange={this.handleUpdateChange}
-                                                className="mb-2 form-control"
-                                                placeholder="Enter 20-digit barcode"
-                                            />
-                                            {errors.preferredBarcode && <div className="error-message">{errors.preferredBarcode}</div>}
-                                            <label htmlFor="updateRestockDate" className="form-label">Restock Date</label>
-                                            <input
-                                                type="date"
-                                                id="updateRestockDate"
-                                                name="restockDate"
-                                                value={selectedItem.restockDate ? selectedItem.restockDate.split('T')[0] : ''}
-                                                onChange={this.handleUpdateChange}
-                                                className="mb-2 form-control"
-                                                placeholder="Select restock date (optional)"
-                                            />
-                                            {errors.restockDate && <div className="error-message">{errors.restockDate}</div>}
-                                            <label htmlFor="updateRestockQuantity" className="form-label">Restock Quantity</label>
-                                            <input
-                                                type="number"
-                                                id="updateRestockQuantity"
-                                                name="restockQuantity"
-                                                value={selectedItem.restockQuantity || ''}
-                                                onChange={this.handleUpdateChange}
-                                                className="mb-2 form-control"
-                                                placeholder="Enter restock quantity (optional)"
-                                            />
-                                            {errors.restockQuantity && <div className="error-message">{errors.restockQuantity}</div>}
+                                            <div className="row g-3">
+                                                <div className="col-md-6">
+                                                    <label htmlFor="updateProductName" className="form-label">Product Name</label>
+                                                    <input
+                                                        type="text"
+                                                        id="updateProductName"
+                                                        name="productName"
+                                                        value={selectedItem.productName}
+                                                        onChange={this.handleUpdateChange}
+                                                        className={`form-control ${errors.productName ? 'is-invalid' : ''}`}
+                                                    />
+                                                    {errors.productName && <div className="invalid-feedback">{errors.productName}</div>}
+                                                </div>
+                                                <div className="col-md-6">
+                                                    <label htmlFor="updatePurchaseDate" className="form-label">Purchase Date</label>
+                                                    <input
+                                                        type="date"
+                                                        id="updatePurchaseDate"
+                                                        name="purchaseDate"
+                                                        value={selectedItem.purchaseDate.split('T')[0]}
+                                                        onChange={this.handleUpdateChange}
+                                                        className={`form-control ${errors.purchaseDate ? 'is-invalid' : ''}`}
+                                                    />
+                                                    {errors.purchaseDate && <div className="invalid-feedback">{errors.purchaseDate}</div>}
+                                                </div>
+                                                <div className="col-md-6">
+                                                    <label htmlFor="updateProductCategory" className="form-label">Product Category</label>
+                                                    <select
+                                                        id="updateProductCategory"
+                                                        name="productCategory"
+                                                        value={selectedItem.productCategory}
+                                                        onChange={this.handleUpdateChange}
+                                                        className={`form-select ${errors.productCategory ? 'is-invalid' : ''}`}
+                                                    >
+                                                        <option value="Fresh product">Fresh product</option>
+                                                        <option value="Dairy and eggs">Dairy and eggs</option>
+                                                        <option value="Meat and seafood">Meat and seafood</option>
+                                                        <option value="Dry goods staples">Dry goods staples</option>
+                                                        <option value="Household and personal care">Household and personal care</option>
+                                                        <option value="Other">Other</option>
+                                                    </select>
+                                                    {errors.productCategory && <div className="invalid-feedback">{errors.productCategory}</div>}
+                                                </div>
+                                                <div className="col-md-6">
+                                                    <label htmlFor="updatePurchaseQuantity" className="form-label">Purchase Quantity</label>
+                                                    <input
+                                                        type="number"
+                                                        id="updatePurchaseQuantity"
+                                                        name="purchaseQuantity"
+                                                        value={selectedItem.purchaseQuantity}
+                                                        onChange={this.handleUpdateChange}
+                                                        className={`form-control ${errors.purchaseQuantity ? 'is-invalid' : ''}`}
+                                                    />
+                                                    {errors.purchaseQuantity && <div className="invalid-feedback">{errors.purchaseQuantity}</div>}
+                                                </div>
+                                                <div className="col-md-6">
+                                                    <label htmlFor="updatePreferredBarcode" className="form-label">Preferred Barcode</label>
+                                                    <input
+                                                        type="text"
+                                                        id="updatePreferredBarcode"
+                                                        name="preferredBarcode"
+                                                        value={selectedItem.preferredBarcode || ''}
+                                                        onChange={this.handleUpdateChange}
+                                                        className={`form-control ${errors.preferredBarcode ? 'is-invalid' : ''}`}
+                                                    />
+                                                    {errors.preferredBarcode && <div className="invalid-feedback">{errors.preferredBarcode}</div>}
+                                                </div>
+                                                <div className="col-md-6">
+                                                    <label htmlFor="updateRestockDate" className="form-label">Restock Date</label>
+                                                    <input
+                                                        type="date"
+                                                        id="updateRestockDate"
+                                                        name="restockDate"
+                                                        value={selectedItem.restockDate ? selectedItem.restockDate.split('T')[0] : ''}
+                                                        onChange={this.handleUpdateChange}
+                                                        className={`form-control ${errors.restockDate ? 'is-invalid' : ''}`}
+                                                    />
+                                                    {errors.restockDate && <div className="invalid-feedback">{errors.restockDate}</div>}
+                                                </div>
+                                                <div className="col-md-6">
+                                                    <label htmlFor="updateRestockQuantity" className="form-label">Restock Quantity</label>
+                                                    <input
+                                                        type="number"
+                                                        id="updateRestockQuantity"
+                                                        name="restockQuantity"
+                                                        value={selectedItem.restockQuantity || ''}
+                                                        onChange={this.handleUpdateChange}
+                                                        className={`form-control ${errors.restockQuantity ? 'is-invalid' : ''}`}
+                                                    />
+                                                    {errors.restockQuantity && <div className="invalid-feedback">{errors.restockQuantity}</div>}
+                                                </div>
+                                            </div>
                                         </div>
                                         <div className="modal-footer">
-                                            <button type="submit" className="btn btn-primary">Save</button>
                                             <button type="button" className="btn btn-secondary" onClick={this.closeUpdateModal}>
                                                 Cancel
                                             </button>
+                                            <button type="submit" className="btn btn-primary">Save Changes</button>
                                         </div>
                                     </form>
                                 </div>
@@ -580,58 +575,66 @@ class InventoryList extends React.Component {
                     {/* Purchase Report Section */}
                     {report.length > 0 && (
                         <div className="mt-4">
-                            <h3>Purchase Report</h3>
-                            <button className="mb-2 btn btn-primary" onClick={this.downloadPurchaseReportPDF}>
-                                Download as PDF
-                            </button>
-                            <table className="table table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th>Product Name</th>
-                                        <th>Purchase Date</th>
-                                        <th>Category</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {report.map((item, index) => (
-                                        <tr key={index}>
-                                            <td>{item.productName}</td>
-                                            <td>{new Date(item.purchaseDate).toLocaleDateString()}</td>
-                                            <td>{item.productCategory}</td>
+                            <div className="d-flex justify-content-between align-items-center mb-3">
+                                <h3>Purchase Report</h3>
+                                <button className="btn btn-primary" onClick={this.downloadPurchaseReportPDF}>
+                                    Download as PDF
+                                </button>
+                            </div>
+                            <div className="table-responsive">
+                                <table className="table table-bordered">
+                                    <thead className="table-light">
+                                        <tr>
+                                            <th>Product Name</th>
+                                            <th>Purchase Date</th>
+                                            <th>Category</th>
                                         </tr>
-                                    ))}
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    <tbody>
+                                        {report.map((item, index) => (
+                                            <tr key={index}>
+                                                <td>{item.productName}</td>
+                                                <td>{new Date(item.purchaseDate).toLocaleDateString()}</td>
+                                                <td>{item.productCategory}</td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     )}
 
                     {/* Grocery Bill Section */}
                     {bill.length > 0 && (
                         <div className="mt-4">
-                            <h3>Grocery Bill</h3>
-                            <button className="mb-2 btn btn-primary" onClick={this.downloadBillPDF}>
-                                Download as PDF
-                            </button>
-                            <table className="table table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th>Product Name</th>
-                                        <th>Purchase Date</th>
-                                        <th>Quantity</th>
-                                        <th>Category</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {bill.map((item, index) => (
-                                        <tr key={index}>
-                                            <td>{item.productName}</td>
-                                            <td>{new Date(item.purchaseDate).toLocaleDateString()}</td>
-                                            <td>{item.purchaseQuantity}</td>
-                                            <td>{item.productCategory}</td>
+                            <div className="d-flex justify-content-between align-items-center mb-3">
+                                <h3>Grocery Bill</h3>
+                                <button className="btn btn-primary" onClick={this.downloadBillPDF}>
+                                    Download as PDF
+                                </button>
+                            </div>
+                            <div className="table-responsive">
+                                <table className="table table-bordered">
+                                    <thead className="table-light">
+                                        <tr>
+                                            <th>Product Name</th>
+                                            <th>Purchase Date</th>
+                                            <th>Quantity</th>
+                                            <th>Category</th>
                                         </tr>
-                                    ))}
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    <tbody>
+                                        {bill.map((item, index) => (
+                                            <tr key={index}>
+                                                <td>{item.productName}</td>
+                                                <td>{new Date(item.purchaseDate).toLocaleDateString()}</td>
+                                                <td>{item.purchaseQuantity}</td>
+                                                <td>{item.productCategory}</td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     )}
                 </div>

@@ -1,0 +1,6 @@
+projectKey=HomeStockProject
+serverUrl=http://localhost:9000
+serverVersion=25.3.0.104237
+dashboardUrl=http://localhost:9000/dashboard?id=HomeStockProject
+ceTaskId=edc0344b-3745-4822-b36b-a75addf3cc52
+ceTaskUrl=http://localhost:9000/api/ce/task?id=edc0344b-3745-4822-b36b-a75addf3cc52

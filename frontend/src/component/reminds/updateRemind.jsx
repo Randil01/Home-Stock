@@ -50,7 +50,7 @@ function UpdatedReminders() {
     }
 
     console.log(inputs);
-    sendRequest().then(() => history("/"));
+    sendRequest().then(() => history("/remind"));
   };
 
   return (
@@ -107,7 +107,7 @@ function UpdatedReminders() {
             <button
               type="button"
               className="btn btn-danger fw-bold px-4"
-              onClick={() => history("/")}
+              onClick={() => history("/remind")}
             >
               Close
             </button>

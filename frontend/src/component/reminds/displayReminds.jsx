@@ -3,8 +3,8 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import "./reminds.css";
-import jsPDF from 'jspdf';
-import 'jspdf-autotable';
+import jsPDF from "jspdf";
+import "jspdf-autotable";
 const URL = "http://localhost:5000/notification/displayRemind";
 
 const fetchHandler = async () => {
@@ -31,31 +31,37 @@ function RemindersAll() {
   const handleSaveEmail = async (e) => {
     e.preventDefault();
     const emailReg = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/; // Email validation regex
-    
+
     if (!emailReg.test(email)) {
       alert("Please enter a valid email address.");
       return;
     }
-  
+
     try {
       // First, check if the email already exists
-      const checkResponse = await axios.get(`http://localhost:5000/email/check?email=${email}`);
-      
+      const checkResponse = await axios.get(
+        `http://localhost:5000/email/check?email=${email}`
+      );
+
       if (checkResponse.data.exists) {
         alert("This email is already registered.");
         return;
       }
-  
+
       // Proceed with saving the email
-      const response = await axios.post("http://localhost:5000/email/add", { email });
+      const response = await axios.post("http://localhost:5000/email/add", {
+        email,
+      });
       alert(response.data.message || "Email saved successfully!");
-  
+
       setEmail(""); // Reset email input
     } catch (error) {
-      alert("Error saving email: " + (error.response ? error.response.data.message : error.message));
+      alert(
+        "Error saving email: " +
+          (error.response ? error.response.data.message : error.message)
+      );
     }
   };
-  
 
   const filteredReminders = reminders.filter(
     (remind) =>
@@ -77,7 +83,7 @@ function RemindersAll() {
     const interval = setInterval(deleteOldReminders, 86400000);
     return () => clearInterval(interval);
   }, [reminders]);
-  
+
   return (
     <div>
       <Nav />
@@ -184,8 +190,9 @@ function RemindersAll() {
                         className="card-text mb-1 fw-semibold"
                         style={{ fontSize: "1.2rem" }}
                       >
-                        Date: {remind.dateRemind}
+                        Date: {remind.dateRemind.substring(0, 10)}
                       </p>
+
                       <p
                         className="card-text mb-1 fw-semibold"
                         style={{ fontSize: "1.2rem" }}

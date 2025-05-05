@@ -4,17 +4,17 @@
   }
   
   .nav-link {
-    font-weight: normal !important;  /* Reset bold */
-    color: white !important; /* Set the text color to white */
+    font-weight: normal !important;  
+    color: white !important; 
     font-size: 20px;
   }
   
-  /* Optional: Adjust navbar link color on hover */
+  
   .nav-link:hover {
-    color: #202121 !important; 
+    color: #013407 !important; 
   }
 
-  /* Optional: Customize navbar brand font */
+
   .navbar-brand {
     font-size: 30px; 
     font-family: 'Cursive', sans-serif; 

@@ -44,8 +44,6 @@ class InventoryList extends React.Component {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
-    const todayStr = today.toISOString().split("T")[0];
-
     const parseDate = (dateStr) => {
       const [year, month, day] = dateStr.split("-").map(Number);
       const date = new Date(year, month - 1, day);

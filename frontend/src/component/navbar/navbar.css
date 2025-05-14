@@ -11,7 +11,8 @@
   
   
   .nav-link:hover {
-    color: #013407 !important; 
+    color: #e5eee1 !important; 
+    text-shadow: 0 0 2px #aca9a9; 
   }
 
 

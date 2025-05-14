@@ -71,8 +71,8 @@ class InventoryList extends React.Component {
             errors.purchaseQuantity = 'Purchase quantity must be a positive integer';
         }
 
-        if (item.preferredBarcode && !/^\d{20}$/.test(item.preferredBarcode)) {
-            errors.preferredBarcode = 'Barcode must be exactly 20 digits';
+        if (item.preferredBarcode && !/^\d{10}$/.test(item.preferredBarcode)) {
+            errors.preferredBarcode = 'Barcode must be exactly 10 digits';
         }
 
         if (item.restockDate && item.restockDate < item.purchaseDate) {

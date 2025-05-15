@@ -51,11 +51,11 @@ const AssetManager = () => {
 
   // Filter assets based on the search term
   const filteredAssets = assets.filter(
-    asset =>
-      asset.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      asset.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      asset.value.toString().includes(searchTerm)
-  );
+  asset =>
+    (asset.name || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (asset.category || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (asset.value?.toString() || '').includes(searchTerm)
+);
 
   return (
     <div>
